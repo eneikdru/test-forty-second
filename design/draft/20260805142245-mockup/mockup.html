@@ -1,249 +1,456 @@
 <!DOCTYPE html>
+<html class="dark" lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Lexicon Flux - База знаний ФБУН ЦНИИ Эпидемиологии</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Lexicon Flux - Component Reference</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "outline-variant": "#494454",
-                        "inverse-primary": "#6d3bd7",
-                        "surface-tint": "#d0bcff",
-                        "tertiary-fixed-dim": "#91db2a",
-                        "secondary": "#4cd7f6",
-                        "tertiary": "#91db2a",
-                        "surface-container": "#171f33",
-                        "on-tertiary": "#1f3700",
-                        "inverse-surface": "#dae2fd",
-                        "on-surface": "#dae2fd",
-                        "surface": "#0b1326",
-                        "on-error": "#690005",
-                        "secondary-fixed-dim": "#4cd7f6",
-                        "tertiary-fixed": "#acf847",
-                        "on-primary": "#3c0091",
-                        "background": "#0b1326",
-                        "on-tertiary-container": "#1a2f00",
-                        "error-container": "#93000a",
-                        "surface-container-high": "#222a3d",
-                        "on-surface-variant": "#cbc3d7",
-                        "on-secondary-container": "#00424e",
-                        "primary": "#d0bcff",
-                        "on-primary-container": "#340080",
-                        "surface-container-lowest": "#060e20",
-                        "error": "#ffb4ab",
-                        "on-secondary-fixed": "#001f26",
-                        "primary-fixed": "#e9ddff",
-                        "surface-bright": "#31394d",
-                        "on-primary-fixed-variant": "#5516be",
-                        "on-tertiary-fixed": "#102000",
-                        "primary-container": "#a078ff",
-                        "on-error-container": "#ffdad6",
-                        "surface-container-highest": "#2d3449",
-                        "tertiary-container": "#65a100",
-                        "secondary-fixed": "#acedff",
-                        "surface-variant": "#2d3449",
-                        "surface-dim": "#0b1326",
-                        "inverse-on-surface": "#283044",
-                        "on-secondary": "#003640",
-                        "on-secondary-fixed-variant": "#004e5c",
-                        "on-tertiary-fixed-variant": "#304f00",
-                        "secondary-container": "#03b5d3",
-                        "on-primary-fixed": "#23005c",
-                        "outline": "#958ea0",
-                        "surface-container-low": "#131b2e",
-                        "primary-fixed-dim": "#d0bcff",
-                        "on-background": "#dae2fd"
+                    colors: {
+                        // Exact specified brand colors
+                        "brand-navy": "#1A365D",
+                        "brand-blue": "#3182CE",
+                        // Semantic/Flux theme colors
+                        "primary": "#3182CE",
+                        "on-primary": "#FFFFFF",
+                        "primary-container": "#1A365D",
+                        "on-primary-container": "#E2E8F0",
+                        "background": "#0F172A",
+                        "on-background": "#F1F5F9",
+                        "surface": "#1E293B",
+                        "on-surface": "#F1F5F9",
+                        "surface-variant": "#334155",
+                        "on-surface-variant": "#94A3B8",
+                        "outline": "#475569",
+                        "success": "#10B981"
                     },
-                    "borderRadius": {
+                    borderRadius: {
                         "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
+                        "lg": "0.375rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
                     },
-                    "spacing": {
-                        "xl": "40px",
+                    spacing: {
+                        "xl": "32px",
                         "gutter": "16px",
                         "xs": "4px",
                         "lg": "24px",
-                        "unit": "4px",
-                        "margin-desktop": "32px",
                         "md": "16px",
-                        "sm": "8px",
-                        "margin-mobile": "16px"
+                        "sm": "8px"
                     },
-                    "fontFamily": {
-                        "headline-lg": ["Plus Jakarta Sans"],
-                        "body-md": ["Plus Jakarta Sans"],
-                        "display-lg": ["Plus Jakarta Sans"],
-                        "data-mono": ["JetBrains Mono"],
-                        "label-caps": ["JetBrains Mono"],
-                        "headline-lg-mobile": ["Plus Jakarta Sans"],
-                        "body-sm": ["Plus Jakarta Sans"]
-                    },
-                    "fontSize": {
-                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "data-mono": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "500" }],
-                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
-                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
-                    },
-                    "backgroundImage": {
-                        'gradient-primary': 'linear-gradient(135deg, #a078ff 0%, #4cd7f6 100%)',
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
                     }
                 }
             }
         }
     </script>
-<style>
-        body { background-color: #020617; } /* Deepest space background */
-        
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.6);
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
         .glow-shadow {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(49, 130, 206, 0.15);
         }
-        
-        /* Custom scrollbar for webkit */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #494454; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #958ea0; }
+        /* Touch targets must be at least 44x44px for touch interfaces */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background text-on-background min-h-screen pb-24 selection:bg-primary-container selection:text-on-primary-container">
-<!-- Top App Bar (From JSON) -->
-<header class="bg-surface/60 backdrop-blur-xl border-b border-white/10 shadow-sm fixed top-0 w-full z-50">
-<div class="flex justify-between items-center px-gutter h-16">
-<button aria-label="Menu" class="text-on-surface-variant hover:text-secondary transition-colors active:scale-95 duration-150 p-xs">
-<span class="material-symbols-outlined" data-icon="menu">menu</span>
-</button>
-<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tighter text-primary">LEXICON FLUX</h1>
-<button aria-label="Settings" class="text-on-surface-variant hover:text-secondary transition-colors active:scale-95 duration-150 p-xs">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-</div>
-</header>
-<main class="pt-24 px-margin-mobile space-y-xl max-w-md mx-auto">
-<!-- Intro -->
-<section class="space-y-sm">
-<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Component Spec</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Visual reference for engineering implementation.</p>
-</section>
-<!-- 1. Buttons & Actions -->
-<section class="space-y-md">
-<h3 class="font-label-caps text-label-caps text-secondary uppercase tracking-widest border-b border-white/10 pb-xs">1. Buttons &amp; Actions</h3>
-<div class="space-y-md">
-<!-- Primary -->
-<div class="flex flex-col gap-xs">
-<span class="font-data-mono text-data-mono text-on-surface-variant">Primary (Gradient)</span>
-<button class="w-full h-12 rounded bg-gradient-primary text-white font-body-md font-semibold hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-sm glow-shadow">
-<span class="material-symbols-outlined text-sm" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
-                        INITIALIZE SEQUENCE
-                    </button>
-</div>
-<!-- Secondary -->
-<div class="flex flex-col gap-xs">
-<span class="font-data-mono text-data-mono text-on-surface-variant">Secondary (Outline)</span>
-<button class="w-full h-12 rounded border border-secondary text-secondary font-body-md hover:bg-secondary/10 active:scale-[0.98] transition-all">
-                        RUN DIAGNOSTICS
-                    </button>
-</div>
-<!-- Tertiary/Ghost -->
-<div class="flex flex-col gap-xs">
-<span class="font-data-mono text-data-mono text-on-surface-variant">Tertiary (Flux Indicator)</span>
-<button class="w-full h-12 border-l-[4px] border-tertiary bg-surface-container hover:bg-surface-container-high text-on-surface font-data-mono flex items-center px-md transition-colors">
-                        &gt; view_logs()
-                    </button>
-</div>
-<!-- Disabled -->
-<div class="flex flex-col gap-xs">
-<span class="font-data-mono text-data-mono text-on-surface-variant opacity-50">Disabled State</span>
-<button class="w-full h-12 rounded bg-surface-container-highest text-on-surface-variant opacity-50 cursor-not-allowed font-body-md" disabled="">
-                        SYSTEM LOCKED
-                    </button>
-</div>
-</div>
-</section>
-<!-- 4. Data Cards -->
-<section class="space-y-md">
-<h3 class="font-label-caps text-label-caps text-secondary uppercase tracking-widest border-b border-white/10 pb-xs">4. Data Cards</h3>
-<div class="glass-panel p-md rounded-xl space-y-md relative overflow-hidden">
-<!-- Decorative glow behind card -->
-<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
-<div class="flex justify-between items-start">
-<div class="space-y-xs">
-<span class="font-label-caps text-label-caps text-tertiary px-sm py-xs bg-tertiary/15 rounded">SYSTEM HEALTH</span>
-<h4 class="font-headline-lg-mobile text-headline-lg-mobile mt-sm">Optimal</h4>
-</div>
-<span class="material-symbols-outlined text-secondary" data-icon="health_and_safety">health_and_safety</span>
-</div>
-<!-- Mock Sparkline -->
-<div class="h-16 w-full flex items-end gap-[2px] opacity-80">
-<div class="w-full h-[20%] bg-secondary/40 rounded-t-sm"></div>
-<div class="w-full h-[40%] bg-secondary/60 rounded-t-sm"></div>
-<div class="w-full h-[30%] bg-secondary/50 rounded-t-sm"></div>
-<div class="w-full h-[60%] bg-secondary/80 rounded-t-sm"></div>
-<div class="w-full h-[85%] bg-secondary rounded-t-sm relative">
-<div class="absolute top-0 left-0 w-full h-[2px] bg-white blur-[1px]"></div>
-</div>
-<div class="w-full h-[70%] bg-secondary/90 rounded-t-sm"></div>
-<div class="w-full h-[50%] bg-secondary/70 rounded-t-sm"></div>
-<div class="w-full h-[75%] bg-secondary/80 rounded-t-sm"></div>
-</div>
-<div class="grid grid-cols-2 gap-sm pt-sm border-t border-white/5">
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant">LATENCY</p>
-<p class="font-data-mono text-data-mono text-on-surface">12.4ms</p>
-</div>
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant">PACKET LOSS</p>
-<p class="font-data-mono text-data-mono text-tertiary">0.00%</p>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Bottom Nav Bar (From JSON) -->
-<nav class="bg-surface-container-lowest/80 backdrop-blur-lg border-t border-white/10 fixed bottom-0 w-full rounded-t-full z-50 flex justify-around items-center h-20 pb-safe shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-<!-- Tab 1: Flux (Active based on label match logic) -->
-<button class="flex flex-col items-center text-secondary font-bold hover:text-primary-fixed-dim active:scale-90 transition-transform w-1/4">
-<span class="material-symbols-outlined mb-1" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
-<span class="font-label-caps text-label-caps">Flux</span>
-</button>
-<!-- Tab 2: Data -->
-<button class="flex flex-col items-center text-outline hover:text-primary-fixed-dim active:scale-90 transition-transform w-1/4">
-<span class="material-symbols-outlined mb-1" data-icon="monitoring">monitoring</span>
-<span class="font-label-caps text-label-caps">Data</span>
-</button>
-<!-- Tab 3: Tools -->
-<button class="flex flex-col items-center text-outline hover:text-primary-fixed-dim active:scale-90 transition-transform w-1/4">
-<span class="material-symbols-outlined mb-1" data-icon="construction">construction</span>
-<span class="font-label-caps text-label-caps">Tools</span>
-</button>
-<!-- Tab 4: User -->
-<button class="flex flex-col items-center text-outline hover:text-primary-fixed-dim active:scale-90 transition-transform w-1/4">
-<span class="material-symbols-outlined mb-1" data-icon="account_circle">account_circle</span>
-<span class="font-label-caps text-label-caps">User</span>
-</button>
-</nav>
-</body></html>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 selection:bg-brand-blue/30 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-surface/80 backdrop-blur-xl border-b border-outline/50 fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-lg h-16">
+            <div class="flex items-center gap-md">
+                <button aria-label="Menu" class="touch-target text-on-surface-variant hover:text-brand-blue transition-colors flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+                </button>
+                <div class="flex flex-col">
+                    <span class="font-mono text-xs font-bold tracking-widest text-brand-blue">LEXICON FLUX</span>
+                    <span class="text-xs text-on-surface-variant font-medium">ЦНИИ Эпидемиологии</span>
+                </div>
+            </div>
+
+            <!-- Quick search bar for desktop -->
+            <div class="hidden md:flex items-center bg-surface-variant/50 border border-outline rounded-lg px-sm py-1 w-80">
+                <span class="material-symbols-outlined text-on-surface-variant text-lg">search</span>
+                <input type="text" placeholder="Поиск (ФБУН, ГЭК, ГИА...)" class="bg-transparent border-none focus:ring-0 text-sm placeholder-on-surface-variant/60 w-full ml-xs text-on-background" />
+            </div>
+
+            <div class="flex items-center gap-sm">
+                <!-- User Profile / Role Indicator -->
+                <div class="hidden sm:flex flex-col text-right mr-xs">
+                    <span class="text-xs font-semibold text-on-background">Иванов И.И.</span>
+                    <span class="text-[10px] font-mono text-brand-blue uppercase tracking-wider">Контент-менеджер</span>
+                </div>
+                <button aria-label="Notifications" class="touch-target text-on-surface-variant hover:text-brand-blue transition-colors flex items-center justify-center relative">
+                    <span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-brand-blue rounded-full"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 px-gutter max-w-7xl mx-auto space-y-lg">
+
+        <!-- Welcome Section / Breadcrumbs -->
+        <section class="space-y-xs">
+            <div class="flex items-center gap-xs text-xs font-mono text-on-surface-variant">
+                <span>База знаний</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+                <span class="text-brand-blue">Учебно-методические материалы</span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-on-background">
+                Рабочие программы & ФОСы
+            </h1>
+            <p class="text-sm text-on-surface-variant max-w-2xl">
+                Централизованный репозиторий учебно-методических планов ординатуры, аспирантуры и программ дополнительного образования ЦНИИ Эпидемиологии ФБУН.
+            </p>
+        </section>
+
+        <!-- Dynamic Control Bar (Search, Role selector, Filters) -->
+        <section class="glass-panel p-md rounded-xl space-y-md">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+
+                <!-- Full-text search with suggestions -->
+                <div class="md:col-span-6 space-y-xs">
+                    <label class="text-xs font-mono font-bold text-on-surface-variant uppercase tracking-wider">Полнотекстовый поиск</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                        <input type="text" value="Вопросы к ГИА" class="w-full h-11 pl-11 pr-md bg-surface border border-outline rounded-lg text-sm text-on-background focus:border-brand-blue focus:ring-1 focus:ring-brand-blue" />
+                    </div>
+                    <div class="flex flex-wrap gap-xs pt-1">
+                        <span class="text-xs text-on-surface-variant">Например:</span>
+                        <button class="text-xs font-mono text-brand-blue hover:underline">ФБУН</button>
+                        <button class="text-xs font-mono text-brand-blue hover:underline">ГЭК</button>
+                        <button class="text-xs font-mono text-brand-blue hover:underline">ГИА</button>
+                        <button class="text-xs font-mono text-brand-blue hover:underline">ФГОС</button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="md:col-span-3 space-y-xs">
+                    <label class="text-xs font-mono font-bold text-on-surface-variant uppercase tracking-wider">Специальность</label>
+                    <select class="w-full h-11 bg-surface border border-outline rounded-lg text-sm text-on-background focus:border-brand-blue focus:ring-1 focus:ring-brand-blue">
+                        <option>Эпидемиология</option>
+                        <option>Инфекционные болезни</option>
+                        <option>Педиатрия</option>
+                        <option>Все специальности</option>
+                    </select>
+                </div>
+
+                <div class="md:col-span-3 space-y-xs">
+                    <label class="text-xs font-mono font-bold text-on-surface-variant uppercase tracking-wider">Уровень образования</label>
+                    <select class="w-full h-11 bg-surface border border-outline rounded-lg text-sm text-on-background focus:border-brand-blue focus:ring-1 focus:ring-brand-blue">
+                        <option>Ординатура</option>
+                        <option>Аспирантура</option>
+                        <option>Доп. образование</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Main Content Area: Document Grid & Sidebar -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+
+            <!-- Left Side: Document Cards Grid (8 columns on lg) -->
+            <div class="lg:col-span-8 space-y-md">
+
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-on-background">Найденные документы (3)</h2>
+                    <div class="flex gap-xs">
+                        <button class="touch-target px-md py-xs bg-surface border border-outline hover:border-brand-blue text-xs font-mono rounded flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">tune</span> Фильтры
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT CARD 1 (Strictly complies with grids, fonts, colors, border-radii) -->
+                <div class="glass-panel p-md rounded-xl hover:border-brand-blue/50 transition-all space-y-md relative overflow-hidden glow-shadow">
+                    <!-- Accent brand colored bar left border -->
+                    <div class="absolute left-0 top-0 bottom-0 w-[4px] bg-brand-blue"></div>
+
+                    <div class="flex justify-between items-start pl-xs">
+                        <div class="space-y-xs">
+                            <div class="flex flex-wrap items-center gap-xs">
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-brand-navy text-brand-blue border border-brand-blue/30 rounded">ОРДИНАТУРА</span>
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-success/10 text-success rounded">АКТУАЛЬНО</span>
+                            </div>
+                            <h3 class="text-base font-bold text-on-background hover:text-brand-blue transition-colors cursor-pointer mt-sm">
+                                Вопросы к ГИА по специальности «Эпидемиология»
+                            </h3>
+                            <p class="text-xs text-on-surface-variant">
+                                Протокол ГЭК №14, включая требования к оформлению отзывов научных руководителей и отчетов по практике за 2026 год.
+                            </p>
+                        </div>
+                        <span class="material-symbols-outlined text-brand-blue text-2xl flex-shrink-0">description</span>
+                    </div>
+
+                    <!-- Meta info metadata grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-sm pt-sm border-t border-outline/30 pl-xs">
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ВЕРСИЯ</span>
+                            <span class="text-xs font-mono text-on-background">v2.4.1 (04.08.2026)</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">АВТОР</span>
+                            <span class="text-xs text-on-background">Смирнова Е.А.</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">РАЗМЕР</span>
+                            <span class="text-xs font-mono text-on-background">PDF, 2.4 МБ</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ТЕГИ</span>
+                            <span class="text-xs text-brand-blue font-semibold">#ГИА #ФОС #Эпидемиология</span>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons (Touch target friendly >= 44px height) -->
+                    <div class="flex flex-wrap gap-sm pt-xs pl-xs">
+                        <button class="touch-target h-11 px-md bg-brand-blue hover:bg-brand-blue/90 text-white text-xs font-bold font-mono tracking-wide rounded transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">download</span> СКАЧАТЬ PDF
+                        </button>
+                        <button class="touch-target h-11 px-md bg-brand-navy hover:bg-brand-navy/80 text-brand-blue text-xs font-bold font-mono tracking-wide rounded border border-brand-blue/20 transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">history</span> ИСТОРИЯ
+                        </button>
+                        <button class="touch-target h-11 px-md hover:bg-surface-variant text-on-surface-variant hover:text-brand-blue text-xs font-mono rounded transition-all flex items-center justify-center gap-xs ml-auto">
+                            <span class="material-symbols-outlined text-sm">comment</span> ОБСУДИТЬ (12)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT CARD 2 -->
+                <div class="glass-panel p-md rounded-xl hover:border-brand-blue/50 transition-all space-y-md relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-[4px] bg-brand-blue"></div>
+                    <div class="flex justify-between items-start pl-xs">
+                        <div class="space-y-xs">
+                            <div class="flex flex-wrap items-center gap-xs">
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-brand-navy text-brand-blue border border-brand-blue/30 rounded">АСПИРАНТУРА</span>
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-success/10 text-success rounded">АКТУАЛЬНО</span>
+                            </div>
+                            <h3 class="text-base font-bold text-on-background hover:text-brand-blue transition-colors cursor-pointer mt-sm">
+                                Рабочая программа «Инфекционные болезни»
+                            </h3>
+                            <p class="text-xs text-on-surface-variant">
+                                Нормативный учебно-методический комплекс в соответствии с требованиями ФГОС ВО 2026.
+                            </p>
+                        </div>
+                        <span class="material-symbols-outlined text-brand-blue text-2xl flex-shrink-0">description</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-sm pt-sm border-t border-outline/30 pl-xs">
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ВЕРСИЯ</span>
+                            <span class="text-xs font-mono text-on-background">v1.1.0 (15.05.2026)</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">АВТОР</span>
+                            <span class="text-xs text-on-background">Петров В.М.</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">РАЗМЕР</span>
+                            <span class="text-xs font-mono text-on-background">DOCX, 1.8 МБ</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ТЕГИ</span>
+                            <span class="text-xs text-brand-blue font-semibold">#ФГОС #План #Ординатура</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-sm pt-xs pl-xs">
+                        <button class="touch-target h-11 px-md bg-brand-blue hover:bg-brand-blue/90 text-white text-xs font-bold font-mono tracking-wide rounded transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">download</span> СКАЧАТЬ DOCX
+                        </button>
+                        <button class="touch-target h-11 px-md bg-brand-navy hover:bg-brand-navy/80 text-brand-blue text-xs font-bold font-mono tracking-wide rounded border border-brand-blue/20 transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">history</span> ИСТОРИЯ
+                        </button>
+                        <button class="touch-target h-11 px-md hover:bg-surface-variant text-on-surface-variant hover:text-brand-blue text-xs font-mono rounded transition-all flex items-center justify-center gap-xs ml-auto">
+                            <span class="material-symbols-outlined text-sm">comment</span> ОБСУДИТЬ (2)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT CARD 3 (Needs Update indicator) -->
+                <div class="glass-panel p-md rounded-xl hover:border-brand-blue/50 transition-all space-y-md relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-[4px] bg-amber-500"></div>
+                    <div class="flex justify-between items-start pl-xs">
+                        <div class="space-y-xs">
+                            <div class="flex flex-wrap items-center gap-xs">
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-brand-navy text-brand-blue border border-brand-blue/30 rounded">ШАБЛОНЫ</span>
+                                <span class="font-mono text-[10px] uppercase font-bold tracking-wider px-sm py-[2px] bg-amber-500/10 text-amber-500 rounded">ТРЕБУЕТ ОБНОВЛЕНИЯ</span>
+                            </div>
+                            <h3 class="text-base font-bold text-on-background hover:text-brand-blue transition-colors cursor-pointer mt-sm">
+                                Шаблон отчета по клинической практике
+                            </h3>
+                            <p class="text-xs text-on-surface-variant">
+                                Требуется актуализировать форму отзыва руководителя согласно новому регламенту ФБУН.
+                            </p>
+                        </div>
+                        <span class="material-symbols-outlined text-amber-500 text-2xl flex-shrink-0">warning</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-sm pt-sm border-t border-outline/30 pl-xs">
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ВЕРСИЯ</span>
+                            <span class="text-xs font-mono text-on-background">v3.0.0 (21.11.2025)</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ОТВЕТСТВЕННЫЙ</span>
+                            <span class="text-xs text-on-background">Козлов А.Д.</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">РАЗМЕР</span>
+                            <span class="text-xs font-mono text-on-background">DOCX, 450 КБ</span>
+                        </div>
+                        <div>
+                            <span class="block text-[10px] font-mono text-on-surface-variant uppercase">ТЕГИ</span>
+                            <span class="text-xs text-brand-blue font-semibold">#Шаблон #КлиническаяПрактика</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-sm pt-xs pl-xs">
+                        <button class="touch-target h-11 px-md bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold font-mono tracking-wide rounded transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">edit</span> ОБНОВИТЬ ФАЙЛ
+                        </button>
+                        <button class="touch-target h-11 px-md bg-brand-navy hover:bg-brand-navy/80 text-brand-blue text-xs font-bold font-mono tracking-wide rounded border border-brand-blue/20 transition-all flex items-center justify-center gap-xs">
+                            <span class="material-symbols-outlined text-sm">history</span> ИСТОРИЯ
+                        </button>
+                        <button class="touch-target h-11 px-md hover:bg-surface-variant text-on-surface-variant hover:text-brand-blue text-xs font-mono rounded transition-all flex items-center justify-center gap-xs ml-auto">
+                            <span class="material-symbols-outlined text-sm">comment</span> ОБСУДИТЬ (5)
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Sidebar Navigation / Categories (4 columns on lg) -->
+            <aside class="lg:col-span-4 space-y-lg">
+
+                <!-- Category list navigation -->
+                <div class="glass-panel p-md rounded-xl space-y-md">
+                    <h3 class="text-sm font-mono font-bold text-brand-blue uppercase tracking-widest border-b border-outline/50 pb-sm">
+                        Разделы базы знаний
+                    </h3>
+                    <nav class="space-y-xs">
+                        <a href="#" class="touch-target flex items-center justify-between px-md py-sm rounded-lg bg-brand-navy text-brand-blue font-semibold text-sm">
+                            <div class="flex items-center gap-sm">
+                                <span class="material-symbols-outlined text-lg">school</span>
+                                <span>Учебно-методические материалы</span>
+                            </div>
+                            <span class="bg-brand-blue text-white text-[10px] font-mono px-sm py-[2px] rounded-full">42</span>
+                        </a>
+                        <a href="#" class="touch-target flex items-center justify-between px-md py-sm rounded-lg hover:bg-surface-variant text-on-surface-variant hover:text-on-background text-sm transition-colors">
+                            <div class="flex items-center gap-sm">
+                                <span class="material-symbols-outlined text-lg">gavel</span>
+                                <span>Нормативная база ФБУН</span>
+                            </div>
+                            <span class="bg-surface-variant text-on-surface-variant text-[10px] font-mono px-sm py-[2px] rounded-full">15</span>
+                        </a>
+                        <a href="#" class="touch-target flex items-center justify-between px-md py-sm rounded-lg hover:bg-surface-variant text-on-surface-variant hover:text-on-background text-sm transition-colors">
+                            <div class="flex items-center gap-sm">
+                                <span class="material-symbols-outlined text-lg">assignment_turned_in</span>
+                                <span>Аттестации и экзамены (ГЭК/ГИА)</span>
+                            </div>
+                            <span class="bg-surface-variant text-on-surface-variant text-[10px] font-mono px-sm py-[2px] rounded-full">8</span>
+                        </a>
+                        <a href="#" class="touch-target flex items-center justify-between px-md py-sm rounded-lg hover:bg-surface-variant text-on-surface-variant hover:text-on-background text-sm transition-colors">
+                            <div class="flex items-center gap-sm">
+                                <span class="material-symbols-outlined text-lg">folder_shared</span>
+                                <span>Шаблоны документов</span>
+                            </div>
+                            <span class="bg-surface-variant text-on-surface-variant text-[10px] font-mono px-sm py-[2px] rounded-full">24</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Active Role Selector (Simulating Authorization & Audit logs) -->
+                <div class="glass-panel p-md rounded-xl space-y-md">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-mono font-bold text-brand-blue uppercase tracking-widest">
+                            Имитация прав доступа
+                        </h3>
+                        <span class="material-symbols-outlined text-on-surface-variant text-base">shield</span>
+                    </div>
+                    <p class="text-xs text-on-surface-variant">
+                        В зависимости от роли, интерфейс адаптирует доступные элементы управления (Закон Фиттса, когнитивная нагрузка).
+                    </p>
+                    <div class="grid grid-cols-2 gap-xs">
+                        <button class="touch-target text-xs font-semibold py-sm rounded border border-brand-blue bg-brand-navy text-brand-blue font-mono">
+                            Менеджер
+                        </button>
+                        <button class="touch-target text-xs font-semibold py-sm rounded border border-outline hover:border-brand-blue text-on-surface-variant hover:text-brand-blue font-mono transition-all">
+                            Преподаватель
+                        </button>
+                        <button class="touch-target text-xs font-semibold py-sm rounded border border-outline hover:border-brand-blue text-on-surface-variant hover:text-brand-blue font-mono transition-all">
+                            Ординатор
+                        </button>
+                        <button class="touch-target text-xs font-semibold py-sm rounded border border-outline hover:border-brand-blue text-on-surface-variant hover:text-brand-blue font-mono transition-all">
+                            Администратор
+                        </button>
+                    </div>
+                    <div class="pt-sm border-t border-outline/30">
+                        <span class="text-[10px] font-mono text-on-surface-variant uppercase block">ЖУРНАЛ АУДИТА (ДЕМО)</span>
+                        <div class="mt-xs space-y-sm text-[11px] font-mono text-on-surface-variant">
+                            <div class="flex justify-between">
+                                <span>Иванов И.И. обновил ГИА v2.4.1</span>
+                                <span class="text-[9px]">14:22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Сидоров С.А. скачал Шаблон v3.0.0</span>
+                                <span class="text-[9px]">12:05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar for Mobile -->
+    <nav class="bg-surface/90 backdrop-blur-lg border-t border-outline/50 fixed bottom-0 w-full z-50 flex justify-around items-center h-20 pb-safe shadow-[0_-8px_32px_rgba(0,0,0,0.4)] md:hidden">
+        <button class="flex flex-col items-center justify-center text-brand-blue font-bold active:scale-95 transition-transform w-1/4 touch-target">
+            <span class="material-symbols-outlined mb-1" data-icon="school">school</span>
+            <span class="text-[10px] font-semibold">Учеба</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-brand-blue active:scale-95 transition-transform w-1/4 touch-target">
+            <span class="material-symbols-outlined mb-1" data-icon="search">search</span>
+            <span class="text-[10px] font-semibold">Поиск</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-brand-blue active:scale-95 transition-transform w-1/4 touch-target">
+            <span class="material-symbols-outlined mb-1" data-icon="folder_shared">folder_shared</span>
+            <span class="text-[10px] font-semibold">Шаблоны</span>
+        </button>
+        <button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-brand-blue active:scale-95 transition-transform w-1/4 touch-target">
+            <span class="material-symbols-outlined mb-1" data-icon="shield">shield</span>
+            <span class="text-[10px] font-semibold">Доступ</span>
+        </button>
+    </nav>
+
+</body>
+</html>
