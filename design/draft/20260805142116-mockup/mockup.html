@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lexicon Flux - System Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#273647",
+                      "outline-variant": "#3b494c",
+                      "error-container": "#93000a",
+                      "secondary-fixed-dim": "#e0b6ff",
+                      "background": "#051424",
+                      "surface-dim": "#051424",
+                      "on-surface-variant": "#bac9cc",
+                      "on-error": "#690005",
+                      "secondary-container": "#6d11ad",
+                      "inverse-surface": "#d4e4fa",
+                      "surface-container-highest": "#273647",
+                      "primary": "#c3f5ff",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#9cf0ff",
+                      "tertiary-container": "#d3d0cf",
+                      "on-tertiary": "#313030",
+                      "inverse-primary": "#006875",
+                      "tertiary-fixed": "#e5e2e1",
+                      "tertiary": "#efecec",
+                      "primary-fixed-dim": "#00daf3",
+                      "surface-container-lowest": "#010f1f",
+                      "on-tertiary-container": "#5a5959",
+                      "outline": "#849396",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-surface": "#d4e4fa",
+                      "on-primary": "#00363d",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#6a0baa",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "surface": "#051424",
+                      "surface-container-high": "#1c2b3c",
+                      "secondary-fixed": "#f2daff",
+                      "on-secondary-container": "#d7a4ff",
+                      "on-primary-fixed": "#001f24",
+                      "surface-container": "#122131",
+                      "secondary": "#e0b6ff",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-primary-container": "#00626e",
+                      "on-secondary-fixed": "#2e004e",
+                      "surface-container-low": "#0d1c2d",
+                      "on-primary-fixed-variant": "#004f58",
+                      "inverse-on-surface": "#233143",
+                      "primary-container": "#00e5ff",
+                      "on-secondary": "#4c007d",
+                      "on-background": "#d4e4fa",
+                      "surface-tint": "#00daf3",
+                      "surface-bright": "#2c3a4c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "lg": "24px",
+                      "margin-mobile": "16px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "margin-desktop": "48px"
+              },
+              "fontFamily": {
+                      "headline-xl": [
+                              "Geist"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Geist"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "headline-xl": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #051424;
+            color: #d4e4fa;
+        }
+        .ghost-border {
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row font-body-md">
+<!-- Mobile Top App Bar -->
+<header class="md:hidden flex items-center justify-between px-margin-mobile h-16 w-full top-0 sticky bg-background dark:bg-background border-b border-outline-variant/30 flat no shadows z-50">
+<div class="flex items-center gap-2 text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary dark:text-primary-fixed-dim">
+            LEXICON_FLUX
+        </div>
+<div class="flex items-center gap-2 text-primary dark:text-primary-fixed-dim">
+<span class="material-symbols-outlined">sensors</span>
+</div>
+</header>
+<!-- Desktop Side Navigation -->
+<aside class="hidden md:flex flex-col h-screen py-lg w-72 rounded-r-none bg-surface-dim dark:bg-surface-dim border-r border-outline-variant shadow-xl shadow-secondary-container/10 sticky top-0 shrink-0">
+<div class="px-lg pb-md mb-md border-b border-outline-variant/30">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">CORE_OS</h1>
+</div>
+<nav class="flex-1 overflow-y-auto flex flex-col gap-1">
+<a class="flex items-center gap-sm bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">memory</span>
+                System Overview
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-3 hover:bg-surface-variant/30 font-body-sm text-body-sm transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined">hub</span>
+                Node Registry
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-3 hover:bg-surface-variant/30 font-body-sm text-body-sm transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+                Flux Logs
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-3 hover:bg-surface-variant/30 font-body-sm text-body-sm transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined">shield</span>
+                Security Protocols
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant px-4 py-3 hover:bg-surface-variant/30 font-body-sm text-body-sm transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings_input_component</span>
+                Global Config
+            </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto pb-24 md:pb-margin-desktop">
+<header class="mb-xl">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">System Overview</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Design tokens, typography scales, and foundational elements defining the technical precision of Lexicon Flux.</p>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-md">
+<!-- Colors Panel -->
+<section class="col-span-1 md:col-span-8 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Color Palette</h2>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-sm">
+<!-- Primary -->
+<div class="flex flex-col gap-xs">
+<div class="h-24 rounded-lg bg-primary border border-outline-variant/20 flex items-end p-2">
+<span class="font-code-sm text-code-sm text-on-primary">#c3f5ff</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary">Primary</span>
+</div>
+<!-- Secondary -->
+<div class="flex flex-col gap-xs">
+<div class="h-24 rounded-lg bg-secondary border border-outline-variant/20 flex items-end p-2">
+<span class="font-code-sm text-code-sm text-on-secondary">#e0b6ff</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary">Secondary</span>
+</div>
+<!-- Background -->
+<div class="flex flex-col gap-xs">
+<div class="h-24 rounded-lg bg-background border border-outline-variant/50 flex items-end p-2">
+<span class="font-code-sm text-code-sm text-on-background">#051424</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Background</span>
+</div>
+<!-- Surface Variant -->
+<div class="flex flex-col gap-xs">
+<div class="h-24 rounded-lg bg-surface-variant border border-outline-variant/20 flex items-end p-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant">#273647</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Surface Variant</span>
+</div>
+</div>
+</section>
+<!-- Status Indicators Panel -->
+<section class="col-span-1 md:col-span-4 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Indicators</h2>
+<div class="flex flex-col gap-sm justify-center flex-1">
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,229,255,0.6)]"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Active Process</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.6)]"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Critical Error</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-3 h-3 rounded-full bg-secondary shadow-[0_0_8px_rgba(224,182,255,0.6)]"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Data Sync</span>
+</div>
+</div>
+</section>
+<!-- Typography Panel -->
+<section class="col-span-1 md:col-span-12 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Typography Scale</h2>
+<div class="flex flex-col gap-md overflow-x-auto">
+<!-- Row -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-sm border-b border-outline-variant/20 pb-sm min-w-max">
+<div class="w-48 font-label-caps text-label-caps text-on-surface-variant shrink-0">headline-xl</div>
+<div class="font-headline-xl text-headline-xl text-on-surface">Sphinx of black quartz</div>
+</div>
+<!-- Row -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-sm border-b border-outline-variant/20 pb-sm min-w-max">
+<div class="w-48 font-label-caps text-label-caps text-on-surface-variant shrink-0">headline-lg</div>
+<div class="font-headline-lg text-headline-lg text-on-surface">Sphinx of black quartz</div>
+</div>
+<!-- Row -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-sm border-b border-outline-variant/20 pb-sm min-w-max">
+<div class="w-48 font-label-caps text-label-caps text-on-surface-variant shrink-0">body-md</div>
+<div class="font-body-md text-body-md text-on-surface">Sphinx of black quartz, judge my vow.</div>
+</div>
+<!-- Row -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-sm border-b border-outline-variant/20 pb-sm min-w-max">
+<div class="w-48 font-label-caps text-label-caps text-on-surface-variant shrink-0">body-sm</div>
+<div class="font-body-sm text-body-sm text-on-surface">Sphinx of black quartz, judge my vow.</div>
+</div>
+<!-- Row -->
+<div class="flex flex-col sm:flex-row sm:items-center gap-sm min-w-max">
+<div class="w-48 font-label-caps text-label-caps text-on-surface-variant shrink-0">code-sm</div>
+<div class="font-code-sm text-code-sm text-primary-fixed-dim bg-surface-container-high px-2 py-1 rounded">System.out.println("Sphinx");</div>
+</div>
+</div>
+</section>
+<!-- Iconography Panel -->
+<section class="col-span-1 md:col-span-12 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Core Iconography</h2>
+<div class="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-8 gap-sm">
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</div>
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">sensors</span>
+</div>
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">memory</span>
+</div>
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">shield</span>
+</div>
+<div class="flex flex-col items-center justify-center p-sm bg-surface-variant/30 rounded-lg ghost-border gap-xs hover:bg-surface-variant/60 transition-colors">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Mobile Bottom Nav Bar -->
+<nav class="md:hidden flex justify-around items-center px-gutter w-full fixed bottom-0 z-50 h-16 bg-surface-container-low dark:bg-surface-container-low border-t border-outline-variant/20 flat no shadows">
+<a class="flex flex-col items-center justify-center bg-secondary-container/20 text-secondary-fixed-dim rounded-xl p-2 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined font-label-caps text-label-caps">analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined font-label-caps text-label-caps">account_tree</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined font-label-caps text-label-caps">settings</span>
+</a>
+</nav>
+</body></html>
