@@ -1,0 +1,433 @@
+openapi: 3.0.3
+info:
+  title: Financial Workflow API Contract
+  description: Shared API contract for Eneik's financial workflows slice, specifying endpoints, schemas, and error shapes for budget submission, workload assignment, and report generation.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: Local API gateway or base path
+paths:
+  /financial/terms:
+    get:
+      summary: Retrieve all academic terms
+      description: Returns a list of all academic terms configured in the system.
+      operationId: getTerms
+      responses:
+        '200':
+          description: A list of academic terms.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AcademicTerm'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /financial/budgets:
+    post:
+      summary: Submit a new budget record
+      description: Submits a budget record for a specific academic term and category. Ensures allocated amount does not exceed the total amount.
+      operationId: submitBudget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetSubmissionRequest'
+      responses:
+        '201':
+          description: Budget record successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetRecord'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get budget records
+      description: Retrieve budget records, optionally filtered by academic term ID.
+      operationId: getBudgets
+      parameters:
+        - name: termId
+          in: query
+          required: false
+          description: Unique identifier of the academic term
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of budget records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BudgetRecord'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /financial/workloads:
+    post:
+      summary: Assign workload to an instructor
+      description: Creates a workload assignment for a specified academic term, instructor, planned hours, and hourly rate.
+      operationId: assignWorkload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkloadAssignmentRequest'
+      responses:
+        '201':
+          description: Workload record successfully assigned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkloadRecord'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get workload records
+      description: Retrieve workload assignments, optionally filtered by academic term ID.
+      operationId: getWorkloads
+      parameters:
+        - name: termId
+          in: query
+          required: false
+          description: Unique identifier of the academic term
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of workload records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkloadRecord'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /financial/reports/summary:
+    get:
+      summary: Generate financial report summary
+      description: Computes and generates a financial report summary for a specific academic term, including totals for budgets, workloads, and scholarships.
+      operationId: getFinancialSummary
+      parameters:
+        - name: termId
+          in: query
+          required: true
+          description: Unique identifier of the academic term
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Financial report summary generated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialReportSummary'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    AcademicTerm:
+      type: object
+      required:
+        - id
+        - name
+        - startDate
+        - endDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of the academic term.
+        name:
+          type: string
+          description: Display name of the academic term.
+          example: "Fall 2026"
+        startDate:
+          type: string
+          format: date
+          description: Start date of the term (must be before endDate).
+          example: "2026-09-01"
+        endDate:
+          type: string
+          format: date
+          description: End date of the term.
+          example: "2026-12-31"
+
+    BudgetRecord:
+      type: object
+      required:
+        - id
+        - termId
+        - category
+        - amount
+        - allocatedAmount
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of the budget record.
+        termId:
+          type: string
+          format: uuid
+          description: Associated academic term ID.
+        category:
+          type: string
+          description: Budget category (e.g., Scholarships, Salaries, Equipment).
+          example: "Scholarships"
+        amount:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Total budget amount allocated for the category.
+          example: 100000.00
+        allocatedAmount:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Sub-allocated amount spent or assigned (must be less than or equal to amount).
+          example: 50000.00
+
+    BudgetSubmissionRequest:
+      type: object
+      required:
+        - termId
+        - category
+        - amount
+        - allocatedAmount
+      properties:
+        termId:
+          type: string
+          format: uuid
+          description: ID of the academic term for which the budget is being submitted.
+        category:
+          type: string
+          description: Category name.
+          example: "Scholarships"
+        amount:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Total budget amount.
+          example: 100000.00
+        allocatedAmount:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Allocated amount, must not exceed amount.
+          example: 50000.00
+
+    WorkloadRecord:
+      type: object
+      required:
+        - id
+        - termId
+        - instructorName
+        - plannedHours
+        - hourlyRate
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of the workload assignment.
+        termId:
+          type: string
+          format: uuid
+          description: Associated academic term ID.
+        instructorName:
+          type: string
+          description: Name of the academic instructor/professor.
+          example: "Dr. Ivanov"
+        plannedHours:
+          type: integer
+          minimum: 0
+          description: Number of planned teaching/work hours.
+          example: 120
+        hourlyRate:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Compensation per hour.
+          example: 150.00
+
+    WorkloadAssignmentRequest:
+      type: object
+      required:
+        - termId
+        - instructorName
+        - plannedHours
+        - hourlyRate
+      properties:
+        termId:
+          type: string
+          format: uuid
+          description: ID of the academic term.
+        instructorName:
+          type: string
+          description: Full name of the instructor.
+          example: "Dr. Ivanov"
+        plannedHours:
+          type: integer
+          minimum: 0
+          description: Planned hours.
+          example: 120
+        hourlyRate:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Hourly rate value.
+          example: 150.00
+
+    ScholarshipRecord:
+      type: object
+      required:
+        - id
+        - studentId
+        - studentName
+        - termId
+        - amount
+        - calculatedAt
+        - hashChecksum
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID of the scholarship record.
+        studentId:
+          type: string
+          description: Institutional student identifier.
+          example: "ST-001"
+        studentName:
+          type: string
+          description: Full name of the student.
+          example: "Ivanov Ivan"
+        termId:
+          type: string
+          format: uuid
+          description: Associated academic term ID.
+        amount:
+          type: number
+          format: double
+          minimum: 0.0
+          description: Scholarship payout amount.
+          example: 15000.00
+        calculatedAt:
+          type: string
+          format: date-time
+          description: ISO-8601 formatted timestamp when calculation occurred.
+          example: "2026-08-05T14:00:00Z"
+        hashChecksum:
+          type: string
+          description: SHA-256 integrity hash checksum to assert immutability.
+          example: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+    FinancialReportSummary:
+      type: object
+      required:
+        - termId
+        - termName
+        - totalBudgetAmount
+        - totalAllocatedAmount
+        - totalWorkloadCost
+        - totalScholarshipPayout
+        - remainingBudget
+      properties:
+        termId:
+          type: string
+          format: uuid
+        termName:
+          type: string
+          example: "Fall 2026"
+        totalBudgetAmount:
+          type: number
+          format: double
+          description: Total budget amount across all budget records for the term.
+          example: 500000.00
+        totalAllocatedAmount:
+          type: number
+          format: double
+          description: Total allocated budget across all budget records for the term.
+          example: 350000.00
+        totalWorkloadCost:
+          type: number
+          format: double
+          description: Computed total workload cost (sum of plannedHours * hourlyRate).
+          example: 18000.00
+        totalScholarshipPayout:
+          type: number
+          format: double
+          description: Sum of all scholarship amounts for the term.
+          example: 120000.00
+        remainingBudget:
+          type: number
+          format: double
+          description: Computed remaining budget (totalBudgetAmount - totalAllocatedAmount).
+          example: 150000.00
+
+    ApiError:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          description: Specific error code for application-level handling.
+          example: "VALIDATION_FAILED"
+        message:
+          type: string
+          description: Human-readable message explaining the error.
+          example: "The allocated amount cannot exceed the total budget amount."
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp when the error occurred.
+          example: "2026-08-05T14:55:00Z"
+        details:
+          type: array
+          items:
+            type: string
+          description: Optional list of detailed validation or system messages.
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body constraint violation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    InternalServerError:
+      description: An unexpected internal error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
