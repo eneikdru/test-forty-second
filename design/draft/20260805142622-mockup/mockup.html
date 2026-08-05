@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ЭпидУчет: Панель управления</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#8ebdf9",
+                        "on-surface": "#111c2d",
+                        "outline-variant": "#c2c7d1",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-container": "#b8bbbc",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#dee8ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#191c1e",
+                        "tertiary-container": "#474b4d",
+                        "surface-dim": "#cfdaf2",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#42474f",
+                        "on-secondary-container": "#54647a",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-container": "#e7eeff",
+                        "on-primary-fixed": "#001c37",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#07497d",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-on-surface": "#ecf1ff",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed": "#d3e4fe",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "inverse-surface": "#263143",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a0c9ff",
+                        "outline": "#727780",
+                        "surface": "#f9f9ff",
+                        "on-background": "#111c2d",
+                        "primary-fixed": "#d2e4ff",
+                        "primary-fixed-dim": "#a0c9ff",
+                        "surface-tint": "#2d6197",
+                        "primary": "#00355f",
+                        "primary-container": "#0f4c81",
+                        "secondary-container": "#d0e1fb",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#d8e3fb",
+                        "tertiary-fixed": "#e0e3e5",
+                        "tertiary": "#313436",
+                        "secondary": "#505f76",
+                        "on-tertiary-fixed-variant": "#444749"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "container-padding": "24px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "data-tabular": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-bold": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "data-tabular": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f9f9ff;
+            color: #111c2d;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col md:flex-row">
+<!-- NavigationDrawer (Web) -->
+<aside class="hidden md:flex flex-col p-4 gap-stack-sm bg-surface dark:bg-surface-container-low h-full w-80 rounded-r-xl shadow-sm dark:shadow-none fixed top-0 left-0 z-40">
+<div class="flex items-center gap-4 mb-stack-lg p-2">
+<div class="h-12 w-12 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center">
+<img class="object-cover w-full h-full" data-alt="A professional headshot of a healthcare administrator in a clinical setting. Light, clean background, modern medical aesthetic, soft even lighting. The person is wearing a subtle lab coat or smart casual attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRk_YhZ7gDypWvOLco7lc5QMmqyLgTP9g7OPLH7bS7faXRS_CYbXV1v6av7GoJRbHLONAbKjZH-ysAiHrkyggXJ29T7L4KMd_fbjLaOolCaikEQj8UIrQur0nbVNZ-R5c4bgmb47PlHRiT0_xXhEcSfbjmC-4Ghg9PDnIev1YAbMkYNq2FDBTKg2taUXhytSUsYjSck-y2vqWhRKoUv0Dkauh9_tpm9gYRvXelqfA5oBQLgqSjD6-MnMs9GC6NDQOFsc5lLTU3YVKY"/>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-headline-sm text-headline-sm text-primary">Администратор</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">ФГБУ Эпидемиологии</span>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-grow">
+<!-- Active state placeholder based on semantic mapping to Dashboard/Home -->
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Главная</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-body-md text-body-md">Реестр пациентов</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-body-md text-body-md">Эпид-очаги</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-body-md text-body-md">Лаборатория</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md">Архив</span>
+</a>
+</nav>
+<div class="mt-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all duration-150" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Помощь</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-80 pb-20 md:pb-0 min-h-screen">
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex justify-between items-center px-container-padding w-full h-14 bg-surface dark:bg-surface-container-low docked full-width top-0 border-b border-outline-variant dark:border-outline sticky z-30 transition-colors duration-200">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer">medical_services</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">ЭпидУчет</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center px-container-padding w-full h-14 bg-surface dark:bg-surface-container-low sticky top-0 z-30 border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">medical_services</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">ЭпидУчет</span>
+</div>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-container-padding flex flex-col gap-stack-lg max-w-7xl mx-auto w-full">
+<div class="flex flex-col gap-2">
+<h2 class="font-display-lg text-display-lg text-on-surface">Панель управления</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Сводка оперативной эпидемиологической обстановки</p>
+</div>
+<!-- Bento Grid Layout for Metrics & Alerts -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- KPI Card 1: Total Cases -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col gap-4 shadow-sm hover:border-primary transition-colors duration-200 cursor-default group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Всего случаев</span>
+<span class="font-display-lg text-display-lg text-primary">12,482</span>
+</div>
+<div class="p-3 bg-surface-container rounded-full text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">coronavirus</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="material-symbols-outlined text-error text-sm">trending_up</span>
+<span class="font-body-sm text-body-sm text-error font-semibold">+3.2% за неделю</span>
+</div>
+</div>
+<!-- KPI Card 2: Active Outbreaks -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col gap-4 shadow-sm hover:border-primary transition-colors duration-200 cursor-default group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Активные очаги</span>
+<span class="font-display-lg text-display-lg text-error">47</span>
+</div>
+<div class="p-3 bg-error-container rounded-full text-on-error-container group-hover:bg-error group-hover:text-on-error transition-colors duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<span class="material-symbols-outlined text-secondary text-sm">location_on</span>
+<span class="font-body-sm text-body-sm text-secondary">Высокий приоритет: 12</span>
+</div>
+</div>
+<!-- KPI Card 3: Pending Reports -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col gap-4 shadow-sm hover:border-primary transition-colors duration-200 cursor-default group">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider">Отчеты в очереди</span>
+<span class="font-display-lg text-display-lg text-secondary">156</span>
+</div>
+<div class="p-3 bg-surface-container-high rounded-full text-secondary group-hover:bg-secondary group-hover:text-on-secondary transition-colors duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-auto">
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-2/3"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant whitespace-nowrap">Ожидают проверки</span>
+</div>
+</div>
+<!-- Recent Alerts List -->
+<div class="col-span-1 md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm">
+<div class="bg-surface-container-low px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Последние уведомления</h3>
+<button class="font-label-bold text-label-bold text-primary hover:text-primary-fixed-dim transition-colors uppercase">Все уведомления</button>
+</div>
+<div class="flex flex-col">
+<!-- Alert Item 1 -->
+<div class="flex items-start gap-4 p-4 border-b border-surface-variant hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="p-2 bg-error-container rounded-full text-on-error-container shrink-0 mt-1">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Новый очаг инфекции (Корь)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">10 мин назад</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Зафиксировано 3 новых случая в ДОУ №45. Требуется срочная маршрутизация.</span>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="flex items-start gap-4 p-4 border-b border-surface-variant hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="p-2 bg-surface-container-high rounded-full text-secondary shrink-0 mt-1">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">science</span>
+</div>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Обновление лабораторных данных</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">1 час назад</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Поступили результаты ПЦР-тестов (Партия 1024-А). Доступны для анализа.</span>
+</div>
+</div>
+<!-- Alert Item 3 -->
+<div class="flex items-start gap-4 p-4 hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="p-2 bg-primary-container rounded-full text-on-primary-container shrink-0 mt-1">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">campaign</span>
+</div>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Плановая проверка Роспотребнадзора</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Вчера</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Необходимо подготовить сводный отчет за I квартал до 15:00 завтрашнего дня.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Info Area -->
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 flex flex-col gap-4 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity duration-500">
+<div class="bg-cover bg-center w-full h-full" data-alt="A subtle, abstract data visualization map showing epidemiological heat points connecting across a minimalist grey grid. High-tech, clinical, modern data interface aesthetic. Low opacity background element." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBuR7P1p7ZB9x3V6HVslb8hInxAvNOe22yKCUEnyDRs2Ytb_Okkph1IQUw3gbPECvP5agDG8rV6qT5VfdNVEfAK5KhB0FJ86NcIB0EHdf0JELkrz4uxqDVKk1PJxcRf6ERnWh5nYAqxf9tmAlbEPvM6nE4_4uFmIsRlFhJ1W-r0j9W0WMY_X1MaO2JZrUXLSw6CYKpkyYe2D7tiMlIdWnhyFiQJt3EPn0hBy4swEyc1f6HEwN35bAyFQcIO_gNn-caiiJy6uIs66H92')"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold relative z-10">Быстрые действия</h3>
+<div class="flex flex-col gap-3 mt-2 relative z-10">
+<button class="w-full h-9 bg-primary text-on-primary font-label-bold text-label-bold rounded hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                             Зарегистрировать случай
+                         </button>
+<button class="w-full h-9 bg-transparent border border-outline text-secondary font-label-bold text-label-bold rounded hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">upload_file</span>
+                             Загрузить реестр
+                         </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full flex justify-around items-center h-16 pb-safe bg-surface dark:bg-surface-container-low border-t border-outline-variant dark:border-outline z-50">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-95 transition-transform hover:bg-surface-container-highest dark:hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Главная</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 active:scale-95 transition-transform hover:bg-surface-container-highest dark:hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">medical_information</span>
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Случаи</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 active:scale-95 transition-transform hover:bg-surface-container-highest dark:hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Отчеты</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 active:scale-95 transition-transform hover:bg-surface-container-highest dark:hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold mt-1 text-[10px]">Настройки</span>
+</a>
+</nav>
+</body></html>
