@@ -9,7 +9,7 @@
 
 <article
   class={cardClass}
-  aria-label={ariaLabel || title || 'Content Card'}
+  aria-label={ariaLabel || title || 'Карточка с материалом'}
 >
   {#if title || subtitle}
     <header class="border-b border-outline-variant/30 pb-xs mb-sm shrink-0">
