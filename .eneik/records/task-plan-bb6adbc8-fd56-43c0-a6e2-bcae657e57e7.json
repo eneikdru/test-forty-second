@@ -1,0 +1,305 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "Core Knowledge Base and Document Management",
+      "jtbd": "When preparing for educational activities or exams, I want to quickly find the most up-to-date normative documents using full-text search and filters, so that I can ensure compliance and save time.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Reduce average document search and retrieval time from over 5 minutes to under 2 seconds",
+      "tocConstraintRef": "Document retrieval and versioning bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Implement full-text search with synonyms, abbreviations, auto-suggestions, and metadata filters.",
+        "R2: Implement document storage with version control, change history, archiving, categories, and tags.",
+        "R3: Enforce role-based access control (Admin, Content Manager, Teacher, Student) and activity logging.",
+        "R4: Provide functionality to export documents to PDF/DOCX and track usage analytics.",
+        "R5: Support offline content addition with subsequent synchronization and concurrent editing conflict resolution."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Document management and search data schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the core knowledge base for this epic, I want to design the database schema for documents, versions, tags, and roles, so that all required metadata and content relationships are efficiently stored.",
+          "acceptanceCriteria": "Given a new document is uploaded, When it is saved to the database, Then a new version record is created and linked to the correct category and tags.\nGiven a user searches by abbreviation, When the query is executed, Then the schema efficiently supports full-text indexing to return results in under 2 seconds.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Data model rigidity constraint",
+          "sixSigmaMetric": "Ensure 100% of required document metadata fields are queryable",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5"]
+        },
+        {
+          "title": "Knowledge base API contract definition",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing the core knowledge base for this epic, I want to define the OpenAPI contract for document CRUD, search, and analytics, so that backend and frontend teams can build in parallel without integration mismatches.",
+          "acceptanceCriteria": "Given the API specifications are needed, When the OpenAPI document is generated, Then it includes endpoints for search, upload, version history, and analytics with strict DTOs.\nGiven backend and frontend are developing, When they validate against the contract, Then no breaking changes occur silently.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Parallel development integration bottleneck",
+          "sixSigmaMetric": "Zero backward-incompatible API changes during parallel development",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5"]
+        },
+        {
+          "title": "Knowledge base core backend services",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the core knowledge base for this epic, I want to build the backend logic for document management, search, and export, so that the knowledge base operates securely and performs under 2 seconds.",
+          "acceptanceCriteria": "Given an authorized user requests a document search, When the search endpoint is called with an abbreviation, Then the backend returns correctly matched documents within 2 seconds.\nGiven a content manager updates a file, When the update is submitted, Then the backend archives the old version and logs the activity.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Search and export processing bottleneck",
+          "sixSigmaMetric": "Maintain p95 API response time under 2000ms for search queries",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5"]
+        },
+        {
+          "title": "Knowledge base frontend application",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the core knowledge base for this epic, I want to build the frontend SPA for document search, viewing, and administration, so that users can interact with the knowledge base seamlessly across devices.",
+          "acceptanceCriteria": "Given a user accesses the knowledge base, When they use the search bar, Then they see auto-suggestions and filters applied in real-time.\nGiven an admin views the dashboard, When they select document analytics, Then they can view usage statistics and export them.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Client-side state and navigation bottleneck",
+          "sixSigmaMetric": "Achieve 0 UI blocking errors during complex document filtering",
+          "hasUi": true,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5"]
+        },
+        {
+          "title": "QA testing for core knowledge base",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the core knowledge base for this epic, I want to verify the document lifecycle and search functionality across all test layers, so that regressions are prevented and access controls are confirmed.",
+          "acceptanceCriteria": "Given the core system is built, When unit and integration tests run, Then document versioning, RBAC, and full-text search logic pass successfully.\nGiven a full E2E environment, When a critical user journey is simulated, Then a user can log in, search for a document by tag, and download it without errors.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Quality verification bottleneck",
+          "sixSigmaMetric": "Achieve >90% test coverage for document lifecycle and search services",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3", "R4", "R5"]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "LMS and Messenger Ecosystem Integrations",
+      "jtbd": "When documents are added or updated, I want automatic synchronization with LMS platforms and instant messenger notifications, so that all relevant stakeholders are informed promptly without manual effort.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "Increase the percentage of automated LMS synchronizations and notifications from 0% to 100%",
+      "tocConstraintRef": "Manual notification and system sync bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Integrate search indexing and metadata with SDO.crie.ru and Teachbase.",
+        "R2: Synchronize authentication and role mappings with the ЭИОС environment.",
+        "R3: Implement automated notification bots for Telegram and Max triggered by document updates or lifecycle events."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "LMS and messenger integration data schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing integrations for this epic, I want to model the database schema for external system tokens, sync states, and bot subscriptions, so that integration status is reliably tracked.",
+          "acceptanceCriteria": "Given a user subscribes to Telegram notifications, When the subscription is saved, Then the schema stores the chat ID and topic preferences securely.\nGiven an LMS sync occurs, When the sync state is updated, Then the database records the last successful sync timestamp.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Integration state persistence bottleneck",
+          "sixSigmaMetric": "Zero lost integration state records during concurrent syncs",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Integrations API contract definition",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing integrations for this epic, I want to define the API contract for LMS synchronization endpoints and bot webhooks, so that external integrations have a stable interface to consume.",
+          "acceptanceCriteria": "Given external systems need to sync data, When they interact with the API, Then the OpenAPI spec strictly defines request/response shapes for SSO and search indexing.\nGiven messenger bots need to push events, When webhooks are configured, Then the payloads conform exactly to the shared contract.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "External contract ambiguity constraint",
+          "sixSigmaMetric": "Zero contract violations between the knowledge base and LMS systems",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Integrations backend and bot services",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing integrations for this epic, I want to build the backend services for ЭИОС SSO, LMS metadata sync, and messenger bots, so that notifications and auth flow smoothly across platforms.",
+          "acceptanceCriteria": "Given a document is updated in the knowledge base, When the trigger fires, Then the backend pushes a notification to Telegram and Max queues.\nGiven a user logs in via ЭИОС, When the SSO flow completes, Then their roles are synchronized and granted in the system.",
+          "leanValue": "essential",
+          "cynefinDomain": "complex",
+          "tocConstraintRef": "External API latency and failure bottleneck",
+          "sixSigmaMetric": "Achieve 99.9% successful delivery of webhook and messenger notifications",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Integrations management frontend",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing integrations for this epic, I want to build the frontend settings interface, so that administrators can configure LMS syncs and users can manage bot subscriptions.",
+          "acceptanceCriteria": "Given an administrator accesses settings, When they configure LMS integration tokens, Then the UI securely saves the credentials and shows sync health status.\nGiven a user manages their profile, When they opt into Telegram alerts, Then the UI guides them through the bot linking process.",
+          "leanValue": "valuable",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Configuration visibility bottleneck",
+          "sixSigmaMetric": "Reduce integration configuration support requests to near zero",
+          "hasUi": true,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "QA testing for integrations and bots",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing integrations for this epic, I want to verify LMS syncs and messenger notifications across the test pyramid, so that external dependencies do not break core workflows.",
+          "acceptanceCriteria": "Given the integration services are built, When integration tests run with mocked LMS and Telegram APIs, Then sync logic and message formatting pass successfully.\nGiven an E2E environment, When an ЭИОС SSO login is simulated, Then the user is successfully authenticated and roles are matched.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "External dependency verification bottleneck",
+          "sixSigmaMetric": "Achieve >90% test coverage for SSO and webhook logic paths",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Financial, HR, and Academic Workflows in Moodle",
+      "jtbd": "When managing educational finances and staffing, I want centralized tools in Moodle for budget, workload, and scholarships, so that calculations and reports are transparent and strictly access-controlled.",
+      "kanoClass": "Attractive",
+      "cynefinDomain": "complicated",
+      "sixSigmaMetric": "Decrease manual financial calculation errors and report generation time by 80%",
+      "tocConstraintRef": "Financial reporting and calculation constraint",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Implement budget planning and workload distribution modules utilizing Moodle native elements.",
+        "R2: Develop tools for scholarship calculations and administrative reporting.",
+        "R3: Enforce strict role-based access limiting financial sections to Head, Economists, and Accountants, while teachers see only personal workload."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Financial and HR workflow data schema",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing financial workflows for this epic, I want to design the data model for budget, workload, and scholarship records, so that financial calculations are accurate and secure.",
+          "acceptanceCriteria": "Given a new academic term begins, When budget and workload data are initialized, Then the schema enforces relational integrity and constraints on financial values.\nGiven a scholarship is calculated, When the record is stored, Then historical calculations are immutable and traceable.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Financial data integrity constraint",
+          "sixSigmaMetric": "Zero data integrity violations in scholarship and budget records",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Financial workflow API contract",
+          "roleTag": "BARCAN-TAG-12",
+          "jtbd": "When implementing financial workflows for this epic, I want to define the API contract for financial calculations and reporting endpoints, so that backend and Moodle UI integrate perfectly.",
+          "acceptanceCriteria": "Given the financial module is designed, When the OpenAPI contract is published, Then it includes endpoints for budget submission, workload assignment, and report generation.\nGiven frontend components render financial data, When they fetch the endpoints, Then the payload strictly matches the defined schema.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Financial integration contract bottleneck",
+          "sixSigmaMetric": "Zero schema mismatch errors in financial data delivery",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Financial and HR backend services",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing financial workflows for this epic, I want to build the backend logic for scholarship calculations, budget planning, and strict authorization, so that sensitive data is properly computed and protected.",
+          "acceptanceCriteria": "Given a teacher attempts to view budget data, When the backend receives the request, Then it rejects it with a 403 Forbidden.\nGiven an accountant generates a scholarship report, When the calculation runs, Then the backend accurately computes the amounts based on student performance.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Calculation accuracy and authorization bottleneck",
+          "sixSigmaMetric": "Maintain 100% calculation accuracy for automated scholarship distributions",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "Financial Moodle frontend components",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing financial workflows for this epic, I want to build the frontend interfaces for budget planning and workload distribution, so that administrators and teachers have a clear view of their data.",
+          "acceptanceCriteria": "Given an economist logs in, When they navigate to the budget module, Then they see complex data grids with editing capabilities for budget planning.\nGiven a teacher views their profile, When they check workload, Then they see only their personal assigned hours in a read-only format.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Complex data visualization bottleneck",
+          "sixSigmaMetric": "Achieve 0 rendering errors for complex financial data grids",
+          "hasUi": true,
+          "requirementRefs": ["R1", "R2", "R3"]
+        },
+        {
+          "title": "QA testing for financial workflows",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing financial workflows for this epic, I want to verify calculation logic and authorization boundaries across all test layers, so that sensitive financial data is never leaked or miscalculated.",
+          "acceptanceCriteria": "Given the financial backend is ready, When unit tests run on calculation engines, Then all edge cases for scholarships pass with accurate amounts.\nGiven an E2E test suite, When a restricted role attempts to access financial reports, Then the UI and API correctly block the action.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Financial defect prevention bottleneck",
+          "sixSigmaMetric": "Achieve 100% test coverage on calculation and authorization core logic",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2", "R3"]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Lexicon Flux Design System and Strict Localization",
+      "jtbd": "When operating the knowledge base interface, I want a clean, strictly Russian-localized design using the Lexicon Flux system, so that I experience minimal cognitive load and full regulatory compliance.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "clear",
+      "sixSigmaMetric": "Achieve 0 occurrences of non-Russian text and 100% adherence to Lexicon Flux styling rules",
+      "tocConstraintRef": "UI consistency and localization compliance bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Implement the Lexicon Flux design system, incorporating specific colors, typography (Inter/JetBrains Mono), and component shapes.",
+        "R2: Enforce 100% strict Russian localization across all interface elements, error messages, and placeholders, forbidding any foreign language."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Lexicon Flux HTML/CSS design mockups",
+          "roleTag": "BARCAN-TAG-03",
+          "jtbd": "When implementing the design system for this epic, I want to create the foundational HTML/CSS mockups for Lexicon Flux components, so that engineering has a pixel-perfect reference for development.",
+          "acceptanceCriteria": "Given the design requirements, When the HTML/CSS mockups are generated, Then they use the exact specified colors (#1A365D, #3182CE) and fonts (Inter, JetBrains Mono).\nGiven a document card is mocked, When viewed on mobile and desktop, Then it strictly follows the defined grid and border-radius specifications.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Design-to-code translation bottleneck",
+          "sixSigmaMetric": "Zero deviations from brand colors and typography in the final mockups",
+          "hasUi": true,
+          "requirementRefs": ["R1"]
+        },
+        {
+          "title": "Lexicon Flux frontend component library",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the design system for this epic, I want to build the reusable frontend components based on Lexicon Flux mockups, so that the entire application shares a consistent UI vocabulary.",
+          "acceptanceCriteria": "Given the mockups are approved, When the frontend components are implemented, Then buttons, cards, and search inputs perfectly match the Lexicon Flux guidelines.\nGiven the application renders, When viewed across devices, Then the responsive 4-column to 12-column grid system scales seamlessly.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Component reusability constraint",
+          "sixSigmaMetric": "Ensure 100% of UI components utilize the shared Lexicon Flux library classes",
+          "hasUi": true,
+          "requirementRefs": ["R1"]
+        },
+        {
+          "title": "Strict Russian localization enforcement",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing localization for this epic, I want to replace or translate all UI strings to Russian, so that the application meets strict epidemiological accounting regulations.",
+          "acceptanceCriteria": "Given the application has English defaults, When the localization layer is applied, Then absolutely all placeholders, error messages, and buttons are in Russian.\nGiven a user triggers a form validation error, When the error is shown, Then the text contains no English or foreign words.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Regulatory compliance bottleneck",
+          "sixSigmaMetric": "Zero English strings rendered in the client-facing DOM",
+          "hasUi": true,
+          "requirementRefs": ["R2"]
+        },
+        {
+          "title": "QA visual regression and localization testing",
+          "roleTag": "BARCAN-TAG-06",
+          "jtbd": "When implementing the design system for this epic, I want to verify visual adherence to Lexicon Flux and scan for localization leaks, so that compliance is proven automatically before releases.",
+          "acceptanceCriteria": "Given the UI components are built, When visual regression tests run, Then pixel differences against baseline mockups are below the 1% threshold.\nGiven the application is running in E2E, When the DOM is scanned for non-Cyrillic dictionary words in UI text, Then the test asserts zero occurrences found.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Visual and linguistic regression bottleneck",
+          "sixSigmaMetric": "Automate 100% of UI language compliance checks",
+          "hasUi": false,
+          "requirementRefs": ["R1", "R2"]
+        }
+      ]
+    }
+  ]
+}
