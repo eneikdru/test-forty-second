@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .ghost-border {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Base custom styling for beautiful focus states */
+:focus-visible {
+  outline: 2px solid #00daf3;
+  outline-offset: 2px;
+}
