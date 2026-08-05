@@ -2,9 +2,9 @@
   import { createEventDispatcher } from 'svelte';
 
   export let value = '';
-  export let placeholder = 'Search knowledge base...';
+  export let placeholder = 'Поиск по базе знаний...';
   export let id = 'search-input';
-  export let ariaLabel = 'Search input';
+  export let ariaLabel = 'Поле ввода поиска';
 
   const dispatch = createEventDispatcher();
 
@@ -45,7 +45,7 @@
     <button
       type="button"
       class="mr-md text-on-surface-variant hover:text-primary focus:text-primary transition-colors cursor-pointer focus:outline-none flex items-center justify-center rounded-full p-xs hover:bg-surface-variant/40"
-      aria-label="Clear search query"
+      aria-label="Очистить запрос поиска"
       on:click={handleClear}
     >
       <span class="material-symbols-outlined text-body-sm">

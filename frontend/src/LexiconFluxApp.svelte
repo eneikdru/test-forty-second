@@ -3,21 +3,30 @@
   import LexiconCard from './components/LexiconCard.svelte';
   import LexiconSearchInput from './components/LexiconSearchInput.svelte';
 
-  // State
+  // Состояние (State)
   let searchQuery = '';
-  let selectedCategory = 'all';
+  let selectedCategory = 'все';
   let activeRole = 'ординатор';
-  let activeTab = 'overview'; // 'overview' | 'components' | 'documents'
+  let activeTab = 'обзор'; // 'обзор' | 'компоненты' | 'документы'
   let alertMessage = '';
-  let alertType = 'success';
+  let alertType = 'успех';
 
-  // Seed Data: Documents in the Knowledge Base
+  // Переменные формы запроса (Form variables)
+  let applicantName = '';
+  let applicantEmail = '';
+  let documentTitle = '';
+  let updateDescription = '';
+
+  let formError = '';
+  let formSuccess = '';
+
+  // Исходные данные: Документы в базе знаний
   const documents = [
     {
-      id: 'doc-1',
+      id: 'док-1',
       title: 'ФГОС ВО Эпидемиология (31.08.35)',
       category: 'нормативные акты',
-      type: 'PDF',
+      type: 'ПДФ',
       specialty: 'Эпидемиология',
       level: 'ординатура',
       date: '2026-05-12',
@@ -25,10 +34,10 @@
       summary: 'Федеральный государственный образовательный стандарт высшего образования по специальности Эпидемиология.'
     },
     {
-      id: 'doc-2',
+      id: 'док-2',
       title: 'Рабочая программа дисциплины «Инфекционные болезни»',
       category: 'методические материалы',
-      type: 'DOCX',
+      type: 'ДОКС',
       specialty: 'Инфекционные болезни',
       level: 'ординатура',
       date: '2026-06-20',
@@ -36,10 +45,10 @@
       summary: 'Рабочая программа и тематические планы лекций и практических занятий для ординаторов.'
     },
     {
-      id: 'doc-3',
+      id: 'док-3',
       title: 'Шаблон протокола ГЭК (Государственная Экзаменационная Комиссия)',
       category: 'шаблоны',
-      type: 'XLSX',
+      type: 'ЭКСЛ',
       specialty: 'Все специальности',
       level: 'аспирантура',
       date: '2026-07-02',
@@ -47,10 +56,10 @@
       summary: 'Форма протокола заседания государственной экзаменационной комиссии ЦНИИ Эпидемиологии.'
     },
     {
-      id: 'doc-4',
+      id: 'док-4',
       title: 'Вопросы к кандидатскому экзамену по специальности 3.2.2. Эпидемиология',
       category: 'вопросы к экзаменам',
-      type: 'PDF',
+      type: 'ПДФ',
       specialty: 'Эпидемиология',
       level: 'аспирантура',
       date: '2026-04-15',
@@ -58,10 +67,10 @@
       summary: 'Перечень теоретических вопросов и практических задач для подготовки к кандидатскому минимуму.'
     },
     {
-      id: 'doc-5',
+      id: 'док-5',
       title: 'Рекомендации по оформлению научно-квалификационной работы (диссертации)',
       category: 'методические материалы',
-      type: 'PDF',
+      type: 'ПДФ',
       specialty: 'Все специальности',
       level: 'аспирантура',
       date: '2026-08-01',
@@ -69,10 +78,10 @@
       summary: 'Методические рекомендации по структуре, объему и правилам оформления диссертаций.'
     },
     {
-      id: 'doc-6',
+      id: 'док-6',
       title: 'Локальный регламент проведения ГИА в ЦНИИ Эпидемиологии',
       category: 'нормативные акты',
-      type: 'PDF',
+      type: 'ПДФ',
       specialty: 'Все специальности',
       level: 'ординатура',
       date: '2026-03-10',
@@ -81,12 +90,12 @@
     }
   ];
 
-  // Acronym helper for search matching: "ФБУН" (ЦНИИ Эпидемиологии), "ГЭК", "ГИА", "ФГОС"
+  // Вспомогательная функция для поиска аббревиатур: "ФБУН", "ГЭК", "ГИА", "ФГОС"
   function matchesQuery(doc, query) {
     if (!query) return true;
     const cleanQuery = query.toLowerCase().trim();
 
-    // Exact text matches
+    // Точные совпадения текста
     const inTitle = doc.title.toLowerCase().includes(cleanQuery);
     const inSummary = doc.summary.toLowerCase().includes(cleanQuery);
     const inAuthor = doc.author.toLowerCase().includes(cleanQuery);
@@ -94,7 +103,7 @@
     const inLevel = doc.level.toLowerCase().includes(cleanQuery);
     const inCategory = doc.category.toLowerCase().includes(cleanQuery);
 
-    // Acronym expands
+    // Раскрытие аббревиатур
     let acronymMatch = false;
     if (cleanQuery.includes('фбун') && (doc.title.includes('ЦНИИ') || doc.summary.includes('ЦНИИ') || doc.author.includes('Учебный') || doc.author.includes('Ученый'))) {
       acronymMatch = true;
@@ -112,14 +121,14 @@
     return inTitle || inSummary || inAuthor || inSpecialty || inLevel || inCategory || acronymMatch;
   }
 
-  // Filtered documents list
+  // Список отфильтрованных документов
   $: filteredDocuments = documents.filter(doc => {
-    const categoryMatches = selectedCategory === 'all' || doc.category === selectedCategory;
+    const categoryMatches = selectedCategory === 'все' || doc.category === selectedCategory;
     const searchMatches = matchesQuery(doc, searchQuery);
     return categoryMatches && searchMatches;
   });
 
-  // Roles permission matrix
+  // Матрица ролей и полномочий
   const rolePermissions = {
     'администратор': {
       title: 'Администратор Базы Знаний',
@@ -147,42 +156,101 @@
     alertMessage = docTitle
       ? `Выполнено действие: "${actionName}" для документа "${docTitle}"`
       : `Выполнено действие: "${actionName}" в роли "${rolePermissions[activeRole].title}"`;
-    alertType = 'success';
+    alertType = 'успех';
     setTimeout(() => {
       alertMessage = '';
     }, 4000);
   }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    formError = '';
+    formSuccess = '';
+
+    // Валидация ФИО
+    const nameTrimmed = applicantName.trim();
+    if (!nameTrimmed) {
+      formError = 'Ошибка проверки: Пожалуйста, укажите ФИО заявителя.';
+      return;
+    }
+    const cyrillicRegex = /^[а-яА-ЯёЁ\s\-]+$/;
+    if (!cyrillicRegex.test(nameTrimmed)) {
+      formError = 'Ошибка проверки: ФИО должно содержать только символы кириллицы, пробелы и дефисы.';
+      return;
+    }
+
+    // Валидация Почты
+    const emailTrimmed = applicantEmail.trim();
+    if (!emailTrimmed) {
+      formError = 'Ошибка проверки: Пожалуйста, укажите адрес электронной почты.';
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailTrimmed)) {
+      formError = 'Ошибка проверки: Некорректный формат адреса электронной почты.';
+      return;
+    }
+
+    // Валидация Названия документа
+    const docTitleTrimmed = documentTitle.trim();
+    if (!docTitleTrimmed) {
+      formError = 'Ошибка проверки: Пожалуйста, введите название документа.';
+      return;
+    }
+    if (docTitleTrimmed.length < 5) {
+      formError = 'Ошибка проверки: Название документа должно содержать не менее пяти символов.';
+      return;
+    }
+
+    // Валидация Описания изменений
+    const descTrimmed = updateDescription.trim();
+    if (!descTrimmed) {
+      formError = 'Ошибка проверки: Пожалуйста, введите описание необходимых изменений.';
+      return;
+    }
+    if (descTrimmed.length < 10) {
+      formError = 'Ошибка проверки: Описание должно содержать не менее десяти символов.';
+      return;
+    }
+
+    // Успех
+    formSuccess = 'Успех: Ваш запрос на актуализацию документов успешно зарегистрирован и отправлен в учебный отдел!';
+    applicantName = '';
+    applicantEmail = '';
+    documentTitle = '';
+    updateDescription = '';
+  }
 </script>
 
-<!-- Desktop Side Navigation -->
+<!-- Боковая навигация для десктопа -->
 <aside class="hidden md:flex flex-col h-screen py-lg w-72 rounded-r-none bg-surface-dim border-r border-outline-variant shadow-xl sticky top-0 shrink-0 select-none">
   <div class="px-lg pb-md mb-md border-b border-outline-variant/30">
     <div class="flex items-center gap-2 text-primary">
       <span class="material-symbols-outlined text-headline-lg">terminal</span>
-      <h1 class="font-headline-lg text-primary tracking-wide">LEXICON_FLUX</h1>
+      <h1 class="font-headline-lg text-primary tracking-wide">ЛЕКСИКОН_ФЛАКС</h1>
     </div>
     <span class="font-label-caps text-[10px] text-on-surface-variant/60 block mt-1 uppercase">ЦНИИ Эпидемиологии Роспотребнадзора</span>
   </div>
   <nav class="flex-1 overflow-y-auto flex flex-col gap-1">
     <button
-      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'overview' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
-      on:click={() => activeTab = 'overview'}
+      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'обзор' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
+      on:click={() => activeTab = 'обзор'}
     >
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'overview' ? '1' : '0'};">memory</span>
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'обзор' ? '1' : '0'};">memory</span>
       Обзор Системы
     </button>
     <button
-      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'documents' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
-      on:click={() => activeTab = 'documents'}
+      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'документы' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
+      on:click={() => activeTab = 'документы'}
     >
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'documents' ? '1' : '0'};">menu_book</span>
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'документы' ? '1' : '0'};">menu_book</span>
       База Знаний (ФБУН)
     </button>
     <button
-      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'components' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
-      on:click={() => activeTab = 'components'}
+      class="flex items-center gap-sm px-4 py-3 font-body-sm text-body-sm transition-all duration-150 ease-in-out text-left border-0 cursor-pointer {activeTab === 'компоненты' ? 'bg-surface-container-highest text-primary border-l-2 border-primary-fixed-dim' : 'text-on-surface-variant hover:bg-surface-variant/30'}"
+      on:click={() => activeTab = 'компоненты'}
     >
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'components' ? '1' : '0'};">settings_input_component</span>
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {activeTab === 'компоненты' ? '1' : '0'};">settings_input_component</span>
       Библиотека Компонентов
     </button>
   </nav>
@@ -194,18 +262,18 @@
   </div>
 </aside>
 
-<!-- Mobile Header -->
+<!-- Мобильный заголовок -->
 <header class="md:hidden flex items-center justify-between px-margin-mobile h-16 w-full top-0 sticky bg-background border-b border-outline-variant/30 z-50">
   <div class="flex items-center gap-2 text-primary">
     <span class="material-symbols-outlined">terminal</span>
-    <span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">LEXICON_FLUX</span>
+    <span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">ЛЕКСИКОН_ФЛАКС</span>
   </div>
   <div class="flex items-center gap-2 text-primary">
     <span class="material-symbols-outlined">sensors</span>
   </div>
 </header>
 
-<!-- Main Scrollable Canvas -->
+<!-- Главный холст -->
 <main class="flex-1 p-margin-mobile md:p-margin-desktop overflow-y-auto pb-24 md:pb-margin-desktop">
 
   {#if alertMessage}
@@ -215,19 +283,19 @@
     </div>
   {/if}
 
-  {#if activeTab === 'overview'}
-    <!-- OVERVIEW TAB -->
+  {#if activeTab === 'обзор'}
+    <!-- ВКЛАДКА ОБЗОРА -->
     <header class="mb-xl">
       <h1 class="font-headline-xl text-headline-xl text-primary mb-xs">База Знаний ЦНИИ Эпидемиологии</h1>
       <p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
-        Информационная система и библиотека компонентов на базе дизайн-системы Lexicon Flux. Обеспечивает мгновенный доступ к методическим и нормативным материалам Роспотребнадзора.
+        Информационная система и библиотека компонентов на базе дизайн-системы Лексикон Флакс. Обеспечивает мгновенный доступ к методическим и нормативным материалам Роспотребнадзора.
       </p>
     </header>
 
-    <!-- Bento Grid (Scales between mobile 1-column to desktop 12-column) -->
+    <!-- Bento Grid -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-md">
 
-      <!-- Stats / Indicator panel (col-span-4) -->
+      <!-- Панель мониторинга -->
       <section class="col-span-1 md:col-span-4 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
         <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Статус и Мониторинг</h2>
         <div class="flex flex-col gap-sm justify-center flex-1">
@@ -246,7 +314,7 @@
         </div>
       </section>
 
-      <!-- Search & Mockup Sandbox (col-span-8) -->
+      <!-- Поиск и интерактивная панель -->
       <section class="col-span-1 md:col-span-8 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
         <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Быстрый поиск по базе знаний</h2>
         <div class="flex flex-col gap-md">
@@ -255,14 +323,14 @@
           </p>
           <LexiconSearchInput bind:value={searchQuery} placeholder="Поиск материалов..." ariaLabel="Интеллектуальный поиск" />
           <div class="flex gap-sm flex-wrap">
-            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ФГОС'; activeTab = 'documents'; }}>Поиск "ФГОС"</LexiconButton>
-            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ГЭК'; activeTab = 'documents'; }}>Поиск "ГЭК"</LexiconButton>
-            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ГИА'; activeTab = 'documents'; }}>Поиск "ГИА"</LexiconButton>
+            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ФГОС'; activeTab = 'документы'; }}>Поиск "ФГОС"</LexiconButton>
+            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ГЭК'; activeTab = 'документы'; }}>Поиск "ГЭК"</LexiconButton>
+            <LexiconButton variant="outline" on:click={() => { searchQuery = 'ГИА'; activeTab = 'документы'; }}>Поиск "ГИА"</LexiconButton>
           </div>
         </div>
       </section>
 
-      <!-- Roles & Permissions Matrix (col-span-12) -->
+      <!-- Матрица ролей -->
       <section class="col-span-1 md:col-span-12 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
         <header class="border-b border-outline-variant/30 pb-xs mb-sm flex flex-col sm:flex-row sm:items-center justify-between gap-sm">
           <h2 class="font-label-caps text-label-caps text-on-surface-variant">Матрица ролей и полномочий</h2>
@@ -301,10 +369,84 @@
         </div>
       </section>
 
+      <!-- Форма запроса на актуализацию (валидация на русском) -->
+      <section class="col-span-1 md:col-span-12 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
+        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Запрос на актуализацию учебно-методических материалов</h2>
+        <form on:submit={handleFormSubmit} class="flex flex-col gap-md w-full">
+          <p class="font-body-sm text-body-sm text-on-surface-variant">
+            В соответствии с санитарно-эпидемиологическими правилами, все материалы должны проходить регулярную проверку. Если вы обнаружили неактуальные сведения, отправьте запрос на актуализацию через форму ниже.
+          </p>
+
+          {#if formError}
+            <div class="p-md bg-error-container text-on-error-container border border-error/20 rounded-lg flex items-center gap-sm" role="alert">
+              <span class="material-symbols-outlined text-[20px]">warning</span>
+              <span class="font-body-sm text-body-sm font-semibold">{formError}</span>
+            </div>
+          {/if}
+
+          {#if formSuccess}
+            <div class="p-md bg-primary-container text-on-primary-container border border-primary/20 rounded-lg flex items-center gap-sm" role="alert">
+              <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              <span class="font-body-sm text-body-sm font-semibold">{formSuccess}</span>
+            </div>
+          {/if}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-md w-full">
+            <div class="flex flex-col gap-xs w-full">
+              <label for="applicant-name" class="font-label-caps text-[11px] text-on-surface-variant uppercase">ФИО заявителя (только кириллица)</label>
+              <input
+                id="applicant-name"
+                type="text"
+                bind:value={applicantName}
+                placeholder="Иванов Иван Иванович"
+                class="bg-surface-container-high border border-outline-variant rounded-lg p-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full"
+              />
+            </div>
+
+            <div class="flex flex-col gap-xs w-full">
+              <label for="applicant-email" class="font-label-caps text-[11px] text-on-surface-variant uppercase">Электронная почта</label>
+              <input
+                id="applicant-email"
+                type="text"
+                bind:value={applicantEmail}
+                placeholder="primer@pochta.ru"
+                class="bg-surface-container-high border border-outline-variant rounded-lg p-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-xs w-full">
+            <label for="doc-title" class="font-label-caps text-[11px] text-on-surface-variant uppercase">Название документа</label>
+            <input
+              id="doc-title"
+              type="text"
+              bind:value={documentTitle}
+              placeholder="Введите название учебно-методического материала"
+              class="bg-surface-container-high border border-outline-variant rounded-lg p-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full"
+            />
+          </div>
+
+          <div class="flex flex-col gap-xs w-full">
+            <label for="update-desc" class="font-label-caps text-[11px] text-on-surface-variant uppercase">Описание необходимых изменений</label>
+            <textarea
+              id="update-desc"
+              bind:value={updateDescription}
+              placeholder="Опишите, какие разделы требуют актуализации и почему..."
+              rows="3"
+              class="bg-surface-container-high border border-outline-variant rounded-lg p-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none w-full"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end mt-sm">
+            <LexiconButton type="submit" variant="primary">Отправить запрос на актуализацию</LexiconButton>
+          </div>
+        </form>
+      </section>
+
     </div>
 
-  {:else if activeTab === 'documents'}
-    <!-- DOCUMENTS TAB -->
+  {:else if activeTab === 'документы'}
+    <!-- ВКЛАДКА ДОКУМЕНТОВ -->
     <header class="mb-xl">
       <div class="flex items-center gap-sm mb-xs">
         <h1 class="font-headline-xl text-headline-xl text-primary">Материалы Базы Знаний</h1>
@@ -313,25 +455,25 @@
       <p class="font-body-md text-body-md text-on-surface-variant">Регламенты, ФОСы, шаблоны протоколов ГЭК и учебные материалы ординатуры и аспирантуры.</p>
     </header>
 
-    <!-- Search / Filter Area -->
+    <!-- Поиск и фильтры -->
     <div class="flex flex-col md:flex-row gap-md mb-lg">
       <div class="flex-1">
         <LexiconSearchInput bind:value={searchQuery} placeholder="Фильтр по названию, ключевым словам..." />
       </div>
       <div class="flex gap-xs overflow-x-auto pb-1 shrink-0">
-        {#each ['all', 'нормативные акты', 'методические материалы', 'шаблоны', 'вопросы к экзаменам'] as cat}
+        {#each ['все', 'нормативные акты', 'методические материалы', 'шаблоны', 'вопросы к экзаменам'] as cat}
           <button
             type="button"
             class="font-label-caps text-[11px] px-md py-2 rounded border uppercase cursor-pointer whitespace-nowrap transition-all {selectedCategory === cat ? 'bg-secondary text-on-secondary border-secondary' : 'bg-surface-container text-on-surface-variant border-outline-variant hover:border-outline'}"
             on:click={() => selectedCategory = cat}
           >
-            {cat === 'all' ? 'Все разделы' : cat}
+            {cat === 'все' ? 'Все разделы' : cat}
           </button>
         {/each}
       </div>
     </div>
 
-    <!-- Documents Responsive List (4 to 12 column cards representation) -->
+    <!-- Список документов -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
       {#each filteredDocuments as doc}
         <LexiconCard title={doc.title} subtitle={`${doc.specialty} • ${doc.level}`}>
@@ -354,42 +496,42 @@
       {/if}
     </div>
 
-  {:else if activeTab === 'components'}
-    <!-- COMPONENTS DEMO TAB -->
+  {:else if activeTab === 'компоненты'}
+    <!-- ВКЛАДКА БИБЛИОТЕКИ КОМПОНЕНТОВ -->
     <header class="mb-xl">
-      <h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Библиотека Компонентов Lexicon Flux</h1>
+      <h1 class="font-headline-xl text-headline-xl text-primary mb-xs">Библиотека Компонентов Лексикон Флакс</h1>
       <p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">Каталог переиспользуемых UI-компонентов для построения консистентных интерфейсов.</p>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-md">
-      <!-- Buttons section -->
+      <!-- Кнопки -->
       <section class="col-span-1 md:col-span-12 bg-surface-container rounded-xl ghost-border p-lg">
-        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-lg">LexiconButton (Кнопки)</h2>
+        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-lg">Кнопки (LexiconButton)</h2>
         <div class="flex flex-col gap-md">
           <div class="flex flex-wrap gap-md items-center">
-            <LexiconButton variant="primary" on:click={() => triggerAction('Нажата Primary Кнопка')}>Primary Button</LexiconButton>
-            <LexiconButton variant="secondary" on:click={() => triggerAction('Нажата Secondary Кнопка')}>Secondary Button</LexiconButton>
-            <LexiconButton variant="outline" on:click={() => triggerAction('Нажата Outline Кнопка')}>Outline Button</LexiconButton>
-            <LexiconButton variant="danger" on:click={() => triggerAction('Нажата Danger Кнопка')}>Danger Button</LexiconButton>
-            <LexiconButton variant="primary" disabled>Disabled Button</LexiconButton>
+            <LexiconButton variant="primary" on:click={() => triggerAction('Нажата Основная Кнопка')}>Основная кнопка</LexiconButton>
+            <LexiconButton variant="secondary" on:click={() => triggerAction('Нажата Второстепенная Кнопка')}>Второстепенная кнопка</LexiconButton>
+            <LexiconButton variant="outline" on:click={() => triggerAction('Нажата Контурная Кнопка')}>Контурная кнопка</LexiconButton>
+            <LexiconButton variant="danger" on:click={() => triggerAction('Нажата Опасная Кнопка')}>Опасная кнопка</LexiconButton>
+            <LexiconButton variant="primary" disabled>Заблокированная кнопка</LexiconButton>
           </div>
           <div class="bg-surface-container-high rounded-lg p-md mt-sm border border-outline-variant/20">
-            <h3 class="font-label-caps text-label-caps text-primary mb-xs">Параметры (Props):</h3>
+            <h3 class="font-label-caps text-label-caps text-primary mb-xs">Параметры (Свойства):</h3>
             <ul class="font-code-sm text-code-sm text-on-surface-variant flex flex-col gap-xs">
-              <li><code class="text-primary-fixed">variant</code>: "primary" | "secondary" | "outline" | "danger"</li>
-              <li><code class="text-primary-fixed">disabled</code>: boolean (отключение интерактивности)</li>
-              <li><code class="text-primary-fixed">type</code>: "button" | "submit" | "reset"</li>
+              <li><code class="text-primary-fixed">variant (вариант)</code>: "primary" (основной) | "secondary" (второстепенный) | "outline" (контурный) | "danger" (опасный)</li>
+              <li><code class="text-primary-fixed">disabled (заблокирован)</code>: логическое значение (отключение интерактивности)</li>
+              <li><code class="text-primary-fixed">type (тип)</code>: "button" (кнопка) | "submit" (отправка) | "reset" (сброс)</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- Cards section -->
+      <!-- Карточки -->
       <section class="col-span-1 md:col-span-6 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
-        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">LexiconCard (Карточки)</h2>
+        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Карточки (LexiconCard)</h2>
         <LexiconCard title="Пример карточки" subtitle="Подзаголовок или категория" interactive={true}>
           <p class="font-body-sm text-body-sm text-on-surface-variant">
-            Карточки в Lexicon Flux поддерживают интерактивный ховер, имеют закругление углов (xl) и изящную границу (.ghost-border).
+            Карточки в Лексикон Флакс поддерживают интерактивное наведение, имеют закругление углов и изящную границу.
           </p>
           <div slot="footer">
             <LexiconButton variant="outline" on:click={() => triggerAction('Действие в карточке')}>Действие</LexiconButton>
@@ -397,12 +539,12 @@
         </LexiconCard>
       </section>
 
-      <!-- Search inputs section -->
+      <!-- Поля ввода поиска -->
       <section class="col-span-1 md:col-span-6 bg-surface-container rounded-xl ghost-border p-lg flex flex-col gap-md">
-        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">LexiconSearchInput (Поиск)</h2>
+        <h2 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/30 pb-xs mb-sm">Поиск (LexiconSearchInput)</h2>
         <div class="flex flex-col gap-md">
           <p class="font-body-sm text-body-sm text-on-surface-variant">
-            Инпут поиска с иконкой лупы и кнопкой очистки, реагирует на фокус изменением цвета рамки на яркий неоновый.
+            Поле ввода для поиска с иконкой лупы и кнопкой очистки, реагирует на фокус изменением цвета рамки на яркий неоновый.
           </p>
           <LexiconSearchInput placeholder="Тестовый поиск..." />
         </div>
@@ -413,36 +555,35 @@
 
 </main>
 
-<!-- Mobile Bottom Nav Bar -->
+<!-- Мобильное нижнее меню навигации -->
 <nav class="md:hidden flex justify-around items-center px-gutter w-full fixed bottom-0 z-50 h-16 bg-surface-container-low border-t border-outline-variant/20">
   <button
     type="button"
-    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'overview' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
-    on:click={() => activeTab = 'overview'}
+    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'обзор' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
+    on:click={() => activeTab = 'обзор'}
     aria-label="Обзор системы"
   >
-    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'overview' ? '1' : '0'};">dashboard</span>
+    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'обзор' ? '1' : '0'};">dashboard</span>
   </button>
   <button
     type="button"
-    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'documents' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
-    on:click={() => activeTab = 'documents'}
+    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'документы' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
+    on:click={() => activeTab = 'документы'}
     aria-label="Материалы базы знаний"
   >
-    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'documents' ? '1' : '0'};">menu_book</span>
+    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'документы' ? '1' : '0'};">menu_book</span>
   </button>
   <button
     type="button"
-    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'components' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
-    on:click={() => activeTab = 'components'}
+    class="flex flex-col items-center justify-center p-2 rounded-xl transition-all active:scale-90 duration-200 border-0 bg-transparent {activeTab === 'компоненты' ? 'text-secondary-fixed-dim bg-secondary-container/20' : 'text-outline hover:text-primary'}"
+    on:click={() => activeTab = 'компоненты'}
     aria-label="Библиотека компонентов"
   >
-    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'components' ? '1' : '0'};">settings_input_component</span>
+    <span class="material-symbols-outlined font-label-caps text-label-caps" style="font-variation-settings: 'FILL' {activeTab === 'компоненты' ? '1' : '0'};">settings_input_component</span>
   </button>
 </nav>
 
 <style>
-  /* Custom bounce animate and general transition overrides */
   @keyframes bounce {
     0%, 100% {
       transform: translateY(0);
