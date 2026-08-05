@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Work+Sans:wght@600;700&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001848",
+                        "primary": "#003d9b",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c3c6d6",
+                        "on-surface": "#101c2d",
+                        "surface-bright": "#f9f9ff",
+                        "surface-container": "#e7eeff",
+                        "surface-variant": "#d7e3fb",
+                        "on-primary": "#ffffff",
+                        "on-background": "#101c2d",
+                        "surface-tint": "#0c56d0",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "inverse-surface": "#253143",
+                        "tertiary-container": "#595b5d",
+                        "on-primary-container": "#c4d2ff",
+                        "primary-container": "#0052cc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-secondary-fixed-variant": "#34476a",
+                        "on-surface-variant": "#434654",
+                        "surface-container-highest": "#d7e3fb",
+                        "inverse-primary": "#b2c5ff",
+                        "secondary": "#4c5e83",
+                        "primary-fixed": "#dae2ff",
+                        "tertiary-fixed": "#e1e2e4",
+                        "surface-dim": "#cedbf2",
+                        "inverse-on-surface": "#ebf1ff",
+                        "secondary-container": "#bfd2fd",
+                        "on-tertiary-container": "#d2d3d5",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b4c7f1",
+                        "background": "#f9f9ff",
+                        "tertiary-fixed-dim": "#c5c6c8",
+                        "secondary-fixed": "#d7e2ff",
+                        "surface-container-high": "#dee9ff",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "on-secondary-container": "#475a7e",
+                        "on-secondary-fixed": "#041b3c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "tertiary": "#414446",
+                        "outline": "#737685",
+                        "surface": "#f9f9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "xl": "80px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "code": ["Courier Prime"],
+                        "display-lg": ["Work Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Work Sans"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Work Sans"],
+                        "headline-lg-mobile": ["Work Sans"],
+                        "body-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F4F5F7; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-full bg-background text-on-background flex flex-col md:flex-row font-body-md">
+<!-- Navigation Drawer (Desktop) -->
+<nav class="hidden md:flex flex-col h-full overflow-y-auto bg-surface-container-low border-r border-outline-variant shadow-xl fixed left-0 top-0 w-[280px] z-[60] transition-all duration-300 ease-in-out">
+<div class="p-md border-b border-outline-variant flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-md">RA</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary">Researcher Account</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Enterprise Tier</span>
+</div>
+<span class="ml-auto font-code text-code text-outline text-[10px]">v2.4.0</span>
+</div>
+<div class="flex flex-col py-sm flex-1">
+<a class="text-on-surface-variant mx-base my-xs px-md py-base rounded-full hover:bg-surface-variant flex items-center gap-md font-label-md text-label-md transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">home</span>Home
+            </a>
+<a class="bg-primary-container text-on-primary-container mx-base my-xs px-md py-base rounded-full flex items-center gap-md font-label-md text-label-md transition-colors duration-200" href="#">
+<span class="material-symbols-outlined filled-icon">category</span>Categories
+            </a>
+<a class="text-on-surface-variant mx-base my-xs px-md py-base rounded-full hover:bg-surface-variant flex items-center gap-md font-label-md text-label-md transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">bookmark</span>Bookmarks
+            </a>
+<a class="text-on-surface-variant mx-base my-xs px-md py-base rounded-full hover:bg-surface-variant flex items-center gap-md font-label-md text-label-md transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">help</span>Help
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col md:ml-[280px] min-h-screen relative pb-20 md:pb-0">
+<!-- TopAppBar (Mobile & Desktop Content Header) -->
+<header class="bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center px-md py-base w-full sticky top-0 z-50 transition-colors duration-200">
+<div class="flex items-center gap-sm">
+<button class="md:hidden text-on-surface-variant hover:bg-surface-variant/10 p-xs rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">DocStore</h1>
+</div>
+<div class="flex-1 max-w-xl mx-md hidden md:block">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-sm pl-10 pr-sm font-body-md text-body-md text-on-surface placeholder-outline-variant transition-colors" placeholder="Search documents..." type="text"/>
+</div>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-variant/10 p-xs rounded-full md:hidden">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<!-- Canvas -->
+<main class="flex-1 max-w-[1280px] mx-auto w-full p-4 md:p-gutter lg:px-xl">
+<!-- Mobile Search (Visible only on small screens) -->
+<div class="md:hidden mb-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-sm pl-10 pr-sm font-body-md text-body-md text-on-surface placeholder-outline-variant transition-colors shadow-sm" placeholder="Search documents..." type="text"/>
+</div>
+</div>
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight">Document Library</h2>
+<button class="hidden md:flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-label-md text-label-md hover:bg-primary-fixed-variant transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add</span> Upload
+                </button>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-sm overflow-x-auto pb-sm mb-lg scrollbar-hide">
+<button class="flex-shrink-0 bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-md text-label-md border border-transparent shadow-sm">All</button>
+<button class="flex-shrink-0 bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Technical</button>
+<button class="flex-shrink-0 bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Product</button>
+<button class="flex-shrink-0 bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">HR</button>
+<button class="flex-shrink-0 bg-surface-container-highest text-on-surface-variant px-md py-xs rounded-full font-label-md text-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Marketing</button>
+</div>
+<!-- Document List -->
+<div class="flex flex-col gap-sm">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer flex flex-col md:flex-row gap-md items-start md:items-center relative group">
+<div class="w-12 h-12 rounded-lg bg-error-container text-error flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-xs mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] leading-tight">Q3 Architecture Review</h3>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-label-md uppercase tracking-wider ml-2">Technical</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 max-w-3xl">Comprehensive overview of system architecture changes proposed for Q3, including microservices migration strategy and database optimization plans.</p>
+<div class="flex items-center gap-md mt-sm font-body-sm text-body-sm text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 12, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">person</span> Alex Chen</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">hard_drive</span> 2.4 MB</span>
+</div>
+</div>
+<div class="absolute right-md top-md md:static opacity-0 group-hover:opacity-100 transition-opacity flex gap-xs">
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">download</span></button>
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer flex flex-col md:flex-row gap-md items-start md:items-center relative group">
+<div class="w-12 h-12 rounded-lg bg-surface-tint/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">description</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-xs mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] leading-tight">Employee Onboarding Guide</h3>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-label-md uppercase tracking-wider ml-2">HR</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 max-w-3xl">Standard operating procedures and welcoming materials for new hires. Includes IT setup instructions, benefits overview, and campus map.</p>
+<div class="flex items-center gap-md mt-sm font-body-sm text-body-sm text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 10, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">person</span> Sarah Jenkins</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">hard_drive</span> 156 KB</span>
+</div>
+</div>
+<div class="absolute right-md top-md md:static opacity-0 group-hover:opacity-100 transition-opacity flex gap-xs">
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">download</span></button>
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer flex flex-col md:flex-row gap-md items-start md:items-center relative group">
+<div class="w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">slideshow</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-xs mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] leading-tight">Product Roadmap 2024</h3>
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-label-md uppercase tracking-wider ml-2">Product</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2 max-w-3xl">Strategic vision and feature timeline for the upcoming fiscal year. Highlighted key deliverables and resource allocation.</p>
+<div class="flex items-center gap-md mt-sm font-body-sm text-body-sm text-outline">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_today</span> Oct 05, 2023</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">person</span> Marcus Wright</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">hard_drive</span> 5.1 MB</span>
+</div>
+</div>
+<div class="absolute right-md top-md md:static opacity-0 group-hover:opacity-100 transition-opacity flex gap-xs">
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">download</span></button>
+<button class="text-on-surface-variant hover:text-primary p-xs"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="flex justify-center mt-lg mb-xl">
+<button class="bg-transparent border border-outline-variant text-primary px-lg py-sm rounded-lg font-label-md text-label-md hover:bg-surface-variant/50 transition-colors">Load More Documents</button>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden flex justify-around items-center h-16 w-full bg-surface border-t border-outline-variant shadow-md fixed bottom-0 z-50">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-base py-xs scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined filled-icon">library_books</span>
+<span class="font-label-md text-label-md text-[10px] mt-0.5">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs hover:bg-surface-container-high rounded-full scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md text-[10px] mt-0.5">Admin</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-base py-xs hover:bg-surface-container-high rounded-full scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md text-[10px] mt-0.5">Settings</span>
+</a>
+</nav>
+</body></html>
