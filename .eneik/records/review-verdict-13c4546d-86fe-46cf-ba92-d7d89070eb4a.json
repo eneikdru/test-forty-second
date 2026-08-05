@@ -1,0 +1,15 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "The PR commits forbidden files under the restricted `.eneik/` directory (`.eneik/records/design-check-01bb8576-1b9d-4e05-bd1e-fd9166a0a311/desktop-1440.png` and `mobile-375.png`), which are also forbidden binary `.png` files (screenshots/generated local artifacts). Furthermore, it commits a compiled Maven build artifact `target/classes/application.properties` which is part of the `target` build directory.",
+      "concerns": [
+        {
+          "text": "The PR modifies the frontend entry point configuration in `index.html` to point to `main.js` (which directly mounts the new `StrictLocalization` component), bypassing the guarded `App.svelte` entirely.",
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}
