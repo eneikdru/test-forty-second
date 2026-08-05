@@ -1,0 +1,737 @@
+openapi: 3.0.3
+info:
+  title: LMS and Bot Integration API Contract
+  description: >-
+    Shared API contract for LMS synchronization, Single Sign-On (SSO) integration,
+    search indexing, and messenger bot webhooks. This contract defines stable interfaces
+    for syncing educational materials, authenticating via corporate directories,
+    indexing content for full-text search, and pushing events to messenger bots.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: Base API endpoint URL
+security:
+  - BearerAuth: []
+paths:
+  /integrations/lms/sync:
+    get:
+      summary: Retrieve LMS sync states
+      description: Returns a list of all registered external LMS systems and their current synchronization status.
+      operationId: getLmsSyncStates
+      responses:
+        '200':
+          description: A list of LMS sync states.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LmsSyncState'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Initialize or trigger a synchronization job
+      description: Registers a sync operation or updates an existing LMS sync record.
+      operationId: initializeLmsSync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LmsSyncInitiationRequest'
+      responses:
+        '201':
+          description: Synchronization state successfully initialized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LmsSyncState'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/lms/sync/{id}:
+    get:
+      summary: Get LMS sync state by ID
+      description: Retrieves the current sync status and last successful synchronization timestamp of a specific LMS system.
+      operationId: getLmsSyncStateById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the LMS sync state.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: LMS sync state retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LmsSyncState'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/lms/sync/{id}/token:
+    put:
+      summary: Securely update LMS credentials/token
+      description: Sets or rotates the secure authorization token used to connect to the external LMS API.
+      operationId: updateLmsSyncToken
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the LMS sync state.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LmsTokenUpdateRequest'
+      responses:
+        '204':
+          description: Token successfully updated. No content returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/lms/sync/{id}/transition:
+    post:
+      summary: Atomically transition sync status
+      description: >-
+        Safely transitions the synchronization job's status matching current expected status
+        to prevent concurrent write races (using optimistic locking/atomic DB updates).
+      operationId: transitionSyncStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Unique identifier of the LMS sync state.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusTransitionRequest'
+      responses:
+        '200':
+          description: State successfully transitioned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LmsSyncState'
+        '400':
+          description: State transition failed due to mismatching expected current status or business rules.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/sso/login:
+    post:
+      summary: Single Sign-On (SSO) login assertion exchange
+      description: Exchanges a corporate directory/SSO identity assertion or authorization token for a local API gateway session token.
+      operationId: ssoLogin
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SsoLoginRequest'
+      responses:
+        '200':
+          description: SSO login successful, access session granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoLoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: Unauthorized. Assertion token invalid or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/sso/metadata:
+    get:
+      summary: Retrieve SSO Identity Provider (IdP) metadata
+      description: Returns configuration metadata for configuring client federation with standard identity providers.
+      operationId: getSsoMetadata
+      security: []
+      responses:
+        '200':
+          description: SSO identity federation settings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoMetadataResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/search/index:
+    post:
+      summary: Request indexing of synchronized documents and materials
+      description: Batch registers or updates synchronized documents in the search server index. Supports synonyms, abbreviations, and full taxonomy attributes.
+      operationId: pushSearchIndex
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchIndexRequest'
+      responses:
+        '200':
+          description: Indexing completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchIndexResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/bot/subscriptions:
+    get:
+      summary: Retrieve all active bot subscriptions
+      description: Returns a list of messenger bot notification subscriptions.
+      operationId: getBotSubscriptions
+      responses:
+        '200':
+          description: A list of active Telegram/messenger bot notification subscriptions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TelegramSubscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create or update a bot subscription
+      description: Registers or updates a subscription containing target chat information and topic preferences.
+      operationId: subscribeBot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramSubscriptionRequest'
+      responses:
+        '201':
+          description: Telegram subscription successfully registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /integrations/bot/webhooks:
+    post:
+      summary: Messenger bot webhook event push handler
+      description: Receives webhook notification payloads and routes notifications or commands exactly conforming to the shared contract.
+      operationId: processBotWebhook
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BotWebhookPayload'
+      responses:
+        '200':
+          description: Webhook processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          description: Unauthorized webhook delivery request (e.g., mismatching webhook secret).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LmsSyncState:
+      type: object
+      required:
+        - id
+        - systemName
+        - syncStatus
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique database record UUID.
+          example: "03af1d39-e48f-4cb1-807c-9b16ea917992"
+        systemName:
+          type: string
+          description: Unique name identifying the external LMS instance.
+          example: "LMS-EPIDEMIOLOGY-SYSTEM"
+        lastSuccessfulSync:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO-8601 timestamp of the last complete successful synchronization.
+          example: "2026-08-05T14:00:00Z"
+        syncStatus:
+          type: string
+          description: Current synchronization status of the system.
+          enum: [IDLE, SYNCING, COMPLETED, FAILED]
+          example: "COMPLETED"
+        token:
+          type: string
+          description: Masked, encrypted, or reference form of the system API token.
+          example: "********-****-****-****-********9988"
+
+    LmsSyncInitiationRequest:
+      type: object
+      required:
+        - systemName
+        - syncStatus
+      properties:
+        systemName:
+          type: string
+          description: Unique system name for the LMS connection.
+          example: "LMS-EPIDEMIOLOGY-SYSTEM"
+        syncStatus:
+          type: string
+          description: Initial status of the synchronizer state record.
+          enum: [IDLE, SYNCING]
+          example: "IDLE"
+        token:
+          type: string
+          description: Optional initial secret API credential/OAuth token.
+          example: "super-secret-lms-oauth-token-val-9988"
+
+    LmsTokenUpdateRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: The raw unencrypted LMS OAuth token to save (will be encrypted inside persistence).
+          example: "super-secret-lms-oauth-token-val-9988"
+
+    StatusTransitionRequest:
+      type: object
+      required:
+        - currentStatus
+        - targetStatus
+      properties:
+        currentStatus:
+          type: string
+          description: The current status of the sync job (used for optimistic lock/atomic guard verification).
+          enum: [IDLE, SYNCING, COMPLETED, FAILED]
+          example: "IDLE"
+        targetStatus:
+          type: string
+          description: The target status value to transition into.
+          enum: [IDLE, SYNCING, COMPLETED, FAILED]
+          example: "SYNCING"
+        timestamp:
+          type: string
+          format: date-time
+          description: Optional synchronization marker time to update in case of success.
+          example: "2026-08-05T15:30:00Z"
+
+    SsoLoginRequest:
+      type: object
+      required:
+        - provider
+        - token
+      properties:
+        provider:
+          type: string
+          description: SSO protocol or federation provider identity.
+          enum: [OIDC, SAML2, DIRECT_LDAP]
+          example: "OIDC"
+        token:
+          type: string
+          description: Secure authorization code or token retrieved from identity provider.
+          example: "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.ey..."
+
+    SsoLoginResponse:
+      type: object
+      required:
+        - accessToken
+        - tokenType
+        - expiresIn
+        - user
+      properties:
+        accessToken:
+          type: string
+          description: The bearer JWT token issued by local application gateway.
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        tokenType:
+          type: string
+          description: The authorization header prefix schema.
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          description: Token validity duration in seconds.
+          example: 3600
+        user:
+          type: object
+          required:
+            - userId
+            - username
+            - roles
+          properties:
+            userId:
+              type: string
+              format: uuid
+              example: "d4bbf3da-6bdf-48c3-af9d-b84fb65a9ef2"
+            username:
+              type: string
+              example: "ivanov_ii"
+            email:
+              type: string
+              format: email
+              example: "ivanov@epidemiology.ru"
+            roles:
+              type: array
+              items:
+                type: string
+              example: ["ORDINATOR", "INSTRUCTOR"]
+
+    SsoMetadataResponse:
+      type: object
+      required:
+        - issuer
+        - authorizationEndpoint
+        - tokenEndpoint
+        - activeProviders
+      properties:
+        issuer:
+          type: string
+          format: uri
+          example: "https://sso.cniiep.ru/oauth2"
+        authorizationEndpoint:
+          type: string
+          format: uri
+          example: "https://sso.cniiep.ru/oauth2/authorize"
+
+        tokenEndpoint:
+          type: string
+          format: uri
+          example: "https://sso.cniiep.ru/oauth2/token"
+        activeProviders:
+          type: array
+          items:
+            type: string
+          example: ["OIDC", "SAML2"]
+
+    SearchIndexRequest:
+      type: object
+      required:
+        - batchId
+        - documents
+      properties:
+        batchId:
+          type: string
+          format: uuid
+          example: "87a026bc-ffde-42da-91ca-61be5462cf6c"
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexableDocument'
+
+    IndexableDocument:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - category
+      properties:
+        id:
+          type: string
+          description: Unique document identifier.
+          example: "DOC-99212"
+        title:
+          type: string
+          description: Title of the academic material, program, or regulation.
+          example: "Рабочая программа ординатуры по специальности Эпидемиология"
+        content:
+          type: string
+          description: Full-text content body or extracted text.
+          example: "Данная программа регламентирует подготовку ординаторов..."
+        category:
+          type: string
+          description: Taxonomy categorization for directory indexing.
+          example: "ординатура"
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["эпидемиология", "рабочая программа", "нормативные акты"]
+        synonyms:
+          type: array
+          items:
+            type: string
+          description: Registered synonyms or abbreviations to facilitate fuzzy search matches.
+          example: ["ФБУН", "ЦНИИ", "РПД"]
+        documentType:
+          type: string
+          example: "PDF"
+        lastModified:
+          type: string
+          format: date-time
+          example: "2026-08-05T12:00:00Z"
+
+    SearchIndexResponse:
+      type: object
+      required:
+        - status
+        - indexedCount
+      properties:
+        status:
+          type: string
+          enum: [SUCCESS, PARTIAL_SUCCESS, FAILED]
+          example: "SUCCESS"
+        indexedCount:
+          type: integer
+          example: 15
+        failures:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - reason
+            properties:
+              id:
+                type: string
+              reason:
+                type: string
+
+    TelegramSubscription:
+      type: object
+      required:
+        - id
+        - chatId
+        - topicPreferences
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Subscription record primary ID.
+          example: "6c656361-3965-4a69-a1fc-28771144002b"
+        chatId:
+          type: string
+          description: Transparently decrypted telegram chat ID.
+          example: "chat_id_777888999"
+        topicPreferences:
+          type: array
+          items:
+            type: string
+          description: List of categories/topics subscribed for updates.
+          example: ["ординатура", "аспирантура", "вопросы к экзаменам"]
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-08-05T14:12:10Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-08-05T14:15:30Z"
+
+    TelegramSubscriptionRequest:
+      type: object
+      required:
+        - chatId
+        - topicPreferences
+      properties:
+        chatId:
+          type: string
+          description: Telegram chat id to bind.
+          example: "chat_id_777888999"
+        topicPreferences:
+          type: array
+          items:
+            type: string
+          description: Preferred update tags/categories.
+          example: ["ординатура", "аспирантура", "вопросы к экзаменам"]
+
+    BotWebhookPayload:
+      type: object
+      required:
+        - eventId
+        - eventType
+        - chatId
+        - message
+        - timestamp
+      properties:
+        eventId:
+          type: string
+          format: uuid
+          example: "90daefbc-1d2c-4488-81fa-2bf5dc77aa91"
+        eventType:
+          type: string
+          description: Webhook notification category trigger.
+          enum: [DOCUMENT_UPDATED, NEW_EXAM_QUESTIONS, SYSTEM_ALERT, USER_INVITED]
+          example: "DOCUMENT_UPDATED"
+        chatId:
+          type: string
+          description: Target destination conversation/chat id.
+          example: "chat_id_777888999"
+        topic:
+          type: string
+          description: Category scope of the event.
+          example: "ординатура"
+        message:
+          type: string
+          description: Pre-formatted text/alert message intended for delivery.
+          example: "Обновлена рабочая программа по специальности 'Эпидемиология'!"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-08-05T14:15:30Z"
+
+    WebhookResponse:
+      type: object
+      required:
+        - success
+        - message
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Webhook payload processed and notification queued."
+
+    ApiError:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          description: A specific application error code.
+          example: "VALIDATION_FAILED"
+        message:
+          type: string
+          description: A human-readable description of the error.
+          example: "The status update violates workflow rules."
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp of the error occurrence.
+          example: "2026-08-05T14:55:00Z"
+        details:
+          type: array
+          items:
+            type: string
+          description: Additional details or specific field validation errors.
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters or constraint violation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Unauthorized:
+      description: Access token is missing, invalid, or expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    Forbidden:
+      description: Access is denied due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    InternalServerError:
+      description: An unexpected internal server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
