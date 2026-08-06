@@ -6,7 +6,8 @@ def run_cuj():
     # Make sure verification directories exist
     os.makedirs("/home/jules/verification/screenshots", exist_ok=True)
     os.makedirs("/home/jules/verification/videos", exist_ok=True)
-    os.makedirs(".eneik/records/design-check-01bb8576-1b9d-4e05-bd1e-fd9166a0a311", exist_ok=True)
+    target_dir = ".eneik/records/design-check-e970d9c2-95a5-443c-897f-b182de15dbfd"
+    os.makedirs(target_dir, exist_ok=True)
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -17,21 +18,20 @@ def run_cuj():
             record_video_dir="/home/jules/verification/videos"
         )
         page_desktop = context_desktop.new_page()
-        page_desktop.goto("http://localhost:5173/")
+        # Navigate to the integrations settings page
+        page_desktop.goto("http://localhost:5173/?view=settings")
         page_desktop.wait_for_timeout(2000) # Wait for Svelte mounting and styles
 
-        # Trigger form validation error to show in desktop screenshot
-        page_desktop.get_by_label("ФИО заявителя (только кириллица)").fill("John Doe")
-        page_desktop.get_by_label("Электронная почта").fill("john@example.com")
-        page_desktop.get_by_label("Название документа").fill("Стандарт")
-        page_desktop.get_by_label("Описание необходимых изменений").fill("Обновить информацию")
-
-        # Click the submit button
-        page_desktop.get_by_role("button", name="Отправить запрос на актуализацию").click()
+        # Trigger LMS secure credentials config modal to show securely saves UI
+        page_desktop.get_by_role("button", name="Manage Integration").first.click()
         page_desktop.wait_for_timeout(1000)
 
+        # Enter credentials
+        page_desktop.get_by_placeholder("Enter secure bearer authentication token...").fill("canvas-token-secure-1234")
+        page_desktop.wait_for_timeout(500)
+
         # Take standard desktop screenshot for Eneik Design Gate
-        page_desktop.screenshot(path=".eneik/records/design-check-01bb8576-1b9d-4e05-bd1e-fd9166a0a311/desktop-1440.png", full_page=True)
+        page_desktop.screenshot(path=f"{target_dir}/desktop-1440.png", full_page=True)
         # Take custom verification screenshot
         page_desktop.screenshot(path="/home/jules/verification/screenshots/verification-desktop.png", full_page=True)
 
@@ -44,11 +44,12 @@ def run_cuj():
             record_video_dir="/home/jules/verification/videos"
         )
         page_mobile = context_mobile.new_page()
-        page_mobile.goto("http://localhost:5173/")
+        # Navigate to settings page
+        page_mobile.goto("http://localhost:5173/?view=settings")
         page_mobile.wait_for_timeout(2000) # Wait for Svelte mounting and styles
 
         # Take standard mobile screenshot for Eneik Design Gate
-        page_mobile.screenshot(path=".eneik/records/design-check-01bb8576-1b9d-4e05-bd1e-fd9166a0a311/mobile-375.png", full_page=True)
+        page_mobile.screenshot(path=f"{target_dir}/mobile-375.png", full_page=True)
         # Take custom verification screenshot
         page_mobile.screenshot(path="/home/jules/verification/screenshots/verification-mobile.png", full_page=True)
 
